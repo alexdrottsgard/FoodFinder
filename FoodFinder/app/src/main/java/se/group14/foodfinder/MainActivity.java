@@ -16,6 +16,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     private Button searchButton;
     private EditText distanceField;
     private static final String[] priceClass = {"Prisklass 1", "Prisklass 2", "Prisklass 3", "Prisklass 4"};
+    private Button testBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
