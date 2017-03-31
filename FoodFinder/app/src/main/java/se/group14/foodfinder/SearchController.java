@@ -23,6 +23,7 @@ public class SearchController {
     private static final String CLIEND_ID = "QTBTJY4EUWO0TROZGBRZ4I1YZN51DCG4UMM11IBUCWFLHVXF";
     private static final String CLIENT_SECRET = "EX42ZK4A210FHPKT5SK1VXHJCDNAEOXYZUVECOEU1PFNIBEB";
     private ArrayList<Restaurant> restaurants;
+    private String test;
 
     public SearchController(int distance, int price) {
         this.distance=distance;
