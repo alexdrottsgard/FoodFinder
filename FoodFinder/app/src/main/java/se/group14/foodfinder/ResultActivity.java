@@ -9,6 +9,14 @@ import android.os.Bundle;
 public class ResultActivity extends AppCompatActivity {
     private Restaurant[] restaurants;
 
+    public ResultActivity(Restaurant[] restaurants) {
+        this.restaurants = restaurants;
+    }
+
+    public void showInfo(Restaurant restaurant) {
+        
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
