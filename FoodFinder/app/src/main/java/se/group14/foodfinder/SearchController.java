@@ -6,6 +6,7 @@ package se.group14.foodfinder;
 
 public class SearchController {
     private int distance, price;
+    private Restaurant[] restaurants;
 
     public SearchController(int distance, int price) {
         this.distance=distance;
