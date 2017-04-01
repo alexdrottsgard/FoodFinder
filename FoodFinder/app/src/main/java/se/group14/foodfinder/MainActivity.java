@@ -1,6 +1,7 @@
 package se.group14.foodfinder;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -65,11 +66,17 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     public void onClick(View v) {
         v = searchButton;
         chosenDistance = Integer.parseInt(distanceField.getText().toString());
-        //search();
-        new SearchController(chosenDistance, chosenPrice);
+        new SearchController(chosenDistance, chosenPrice, this);
     }
 
-    public void search() {
-        System.out.println("Valt avstånd: " + chosenDistance + ", vald prisklass: " + chosenPrice);
+    public void showAlert(String str) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setMessage(str)
+                .setCancelable(true);
+        AlertDialog alert = builder.create();
+        alert.show();
+
     }
+
 }
