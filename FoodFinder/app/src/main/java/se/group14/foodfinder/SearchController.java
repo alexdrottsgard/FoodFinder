@@ -1,6 +1,5 @@
 package se.group14.foodfinder;
 
-import android.app.AlertDialog;
 import android.os.AsyncTask;
 
 import org.json.JSONArray;
@@ -23,6 +22,7 @@ import java.util.ArrayList;
 
 public class SearchController extends AsyncTask<String, Void, Void> {
     private int distance, price;
+    private double latitude, longitude;
     private MainActivity mainActivity;
     private static final String API = "https://api.foursquare.com/v2/venues/search?ll=";
     private static final String CLIENT_ID = "QTBTJY4EUWO0TROZGBRZ4I1YZN51DCG4UMM11IBUCWFLHVXF";
@@ -30,17 +30,19 @@ public class SearchController extends AsyncTask<String, Void, Void> {
     private ArrayList<Restaurant> restaurants = new ArrayList<Restaurant>();
     private String test;
 
-    public SearchController(int distance, int price, MainActivity ma) {
+    public SearchController(int distance, int price, MainActivity ma, double latitude, double longitude) {
         this.distance=distance;
         this.price=price;
+        this.latitude = latitude;
+        this.longitude = longitude;
         mainActivity = ma;
-        System.out.println("distance: "+distance + " Pris: " + price);
+        System.out.println("distance: "+distance + " Pris: " + price + " Lat: "+ latitude + " Lon: " + longitude);
         getData();
 
     }
 
     public void getData() {
-        execute(API+"40.7,-74&section=food&radius="+distance+"&intent=browse&client_id="+CLIENT_ID+"&client_secret="+CLIENT_SECRET+"&v=20170331");
+        execute(API+latitude+","+longitude+"&categoryId=4d4b7105d754a06374d81259&radius="+distance+"&intent=browse&client_id="+CLIENT_ID+"&client_secret="+CLIENT_SECRET+"&v=20170331");
     }
 
     private String streamToString(InputStream is) throws IOException {
@@ -95,6 +97,8 @@ public class SearchController extends AsyncTask<String, Void, Void> {
                     Restaurant restaurant = new Restaurant();
 
                     restaurant.setName(venue.getString("name"));
+
+                    String id = venue.getString("id");
 
                     JSONObject location = (JSONObject) venue.getJSONObject("location");
 
