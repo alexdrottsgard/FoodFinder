@@ -95,7 +95,8 @@ public class SearchController extends AsyncTask<String, Void, Void> {
 
                     Restaurant restaurant = new Restaurant();
 
-                    getVenueInfo(restaurant, venue.getString("id"));
+                    //getVenueInfo(restaurant, venue.getString("id"));
+                    new VenueHandler(restaurant,venue.getString("id")).start();
 
                     restaurant.setName(venue.getString("name"));
 
@@ -147,9 +148,14 @@ public class SearchController extends AsyncTask<String, Void, Void> {
            //JSONArray venue	    = (JSONArray) jsonObj.getJSONObject("response").getJSONArray("venue");
            JSONObject venue         = (JSONObject) jsonObj.getJSONObject("response");
 
+           System.out.println(venue.get("contact").toString());
+           System.out.println("BAJSTOLLE "+venue.toString());
+
+           /*
            JSONObject contact = (JSONObject) venue.getJSONObject("contact");
            restaurant.setPhone(contact.getString("phone"));
            System.out.println("Telefonnummer: "+contact.getString("phone"));
+           */
 
        }catch (IOException e){
            System.out.println("HeJ, Funkar ej");
@@ -157,6 +163,59 @@ public class SearchController extends AsyncTask<String, Void, Void> {
            e.printStackTrace();
            System.out.println("HeJ, Funkar ej JSON");
        }
+    }
+
+    private class VenueHandler extends Thread {
+        private Restaurant restaurant;
+        private String id;
+
+        public VenueHandler(Restaurant restaurant, String id){
+            this.id = id;
+            this.restaurant = restaurant;
+        }
+
+        public void run() {
+            try {
+                String newURL = "https://api.foursquare.com/v2/venues/" + id + "?client_id=" + CLIENT_ID + "&client_secret=" + CLIENT_SECRET + "&v=20170331";
+
+
+                URL url = new URL(newURL);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("GET");
+                urlConnection.setDoInput(true);
+                urlConnection.connect();
+
+                String response      = streamToString(urlConnection.getInputStream());
+                JSONObject jsonObj   = (JSONObject) new JSONTokener(response).nextValue();
+
+                //JSONArray venue	    = (JSONArray) jsonObj.getJSONObject("response").getJSONArray("venue");
+                JSONObject venue         = (JSONObject) jsonObj.getJSONObject("response");
+
+                try{
+                    //System.out.println(venue.get("contact").toString());
+                    JSONObject contact = (JSONObject) venue.getJSONObject("contact");
+                    String phone = (String) venue.getJSONObject("contact").getString("phone");
+                    System.out.println("TELEFON: " + phone);
+                    //System.out.println("TELEFON: " + contact.getString("phone"));
+                }catch(Exception e){
+                    System.out.println("Exception för contact");
+                }
+
+                System.out.println("BAJSTOLLE "+venue.toString());
+
+           /*
+           JSONObject contact = (JSONObject) venue.getJSONObject("contact");
+           restaurant.setPhone(contact.getString("phone"));
+           System.out.println("Telefonnummer: "+contact.getString("phone"));
+           */
+
+            }catch (IOException e){
+                System.out.println("HeJ, Funkar ej");
+            }catch (JSONException e){
+                e.printStackTrace();
+                System.out.println("HeJ, Funkar ej JSON");
+            }
+        }
     }
 
     @Override
