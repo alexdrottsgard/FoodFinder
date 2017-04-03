@@ -153,7 +153,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
    @Override
     public void onClick(View v) {
        //locationManager.requestLocationUpdates("gps", 5000, 0, locationListener);
-        v = searchButton;
+        //v = searchButton;
         chosenDistance = Integer.parseInt(distanceField.getText().toString());
         new SearchController(chosenDistance, chosenPrice, this, getLatitude(), getLongitude());
     }

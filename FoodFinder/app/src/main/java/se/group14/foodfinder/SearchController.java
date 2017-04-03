@@ -28,7 +28,7 @@ public class SearchController extends AsyncTask<String, Void, Void> {
     private static final String CLIENT_ID = "QTBTJY4EUWO0TROZGBRZ4I1YZN51DCG4UMM11IBUCWFLHVXF";
     private static final String CLIENT_SECRET = "EX42ZK4A210FHPKT5SK1VXHJCDNAEOXYZUVECOEU1PFNIBEB";
     private ArrayList<Restaurant> restaurants = new ArrayList<Restaurant>();
-    private String test;
+    //private Restaurant restaurant;
 
     public SearchController(int distance, int price, MainActivity ma, double latitude, double longitude) {
         this.distance=distance;
@@ -38,11 +38,11 @@ public class SearchController extends AsyncTask<String, Void, Void> {
         mainActivity = ma;
         System.out.println("distance: "+distance + " Pris: " + price + " Lat: "+ latitude + " Lon: " + longitude);
         getData();
-
     }
 
     public void getData() {
-        execute(API+latitude+","+longitude+"&categoryId=4d4b7105d754a06374d81259&radius="+distance+"&intent=browse&client_id="+CLIENT_ID+"&client_secret="+CLIENT_SECRET+"&v=20170331");
+        //execute(API+latitude+","+longitude+"&categoryId=4d4b7105d754a06374d81259&radius="+distance+"&intent=browse&client_id="+CLIENT_ID+"&client_secret="+CLIENT_SECRET+"&v=20170331");
+        execute(API+"40.7,-74&categoryId=4d4b7105d754a06374d81259&radius="+distance+"&intent=browse&client_id="+CLIENT_ID+"&client_secret="+CLIENT_SECRET+"&v=20170331");
     }
 
     private String streamToString(InputStream is) throws IOException {
@@ -70,11 +70,14 @@ public class SearchController extends AsyncTask<String, Void, Void> {
         return str;
     }
 
-
+    /**
+     * @author Filip Heidfors
+     * @param params url'en till API'et som används för att hämta data
+     * @return null
+     */
     @Override
     protected Void doInBackground(String... params) {
         try {
-
             URL url = new URL(params[0]);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("GET");
@@ -94,29 +97,20 @@ public class SearchController extends AsyncTask<String, Void, Void> {
                     JSONObject venue 	= (JSONObject) venues.get(i);
 
                     Restaurant restaurant = new Restaurant();
-
-                    //getVenueInfo(restaurant, venue.getString("id"));
-                    new VenueHandler(restaurant,venue.getString("id")).start();
-
                     restaurant.setName(venue.getString("name"));
-
-                    String id = venue.getString("id");
+                    new VenueHandler(restaurant,venue.getString("id"),i).start();
 
                     JSONObject location = (JSONObject) venue.getJSONObject("location");
-
-                    restaurant.setLatitude(Double.valueOf(location.getString("lat")));
-                    restaurant.setLongitude(Double.valueOf(location.getString("lng")));
 
                     restaurant.setAddress(location.getString("formattedAddress"));
                     restaurant.setDistance(location.getInt("distance"));
 
+                    restaurant.setLatitude(Double.valueOf(location.getString("lat")));
+                    restaurant.setLongitude(Double.valueOf(location.getString("lng")));
+
                     restaurants.add(restaurant);
-
                 }
-
             }
-
-
 
         }catch (MalformedURLException e) {
             //e.printStackTrace();
@@ -131,53 +125,21 @@ public class SearchController extends AsyncTask<String, Void, Void> {
         return null;
     }
 
-    protected void getVenueInfo(Restaurant restaurant, String id) {
-       try {
-           String newURL = "https://api.foursquare.com/v2/venues/" + id + "?client_id=" + CLIENT_ID + "&client_secret=" + CLIENT_SECRET + "&v=20170331";
-
-
-           URL url = new URL(newURL);
-           HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-           urlConnection.setRequestMethod("GET");
-           urlConnection.setDoInput(true);
-           urlConnection.connect();
-
-           String response      = streamToString(urlConnection.getInputStream());
-           JSONObject jsonObj   = (JSONObject) new JSONTokener(response).nextValue();
-
-           //JSONArray venue	    = (JSONArray) jsonObj.getJSONObject("response").getJSONArray("venue");
-           JSONObject venue         = (JSONObject) jsonObj.getJSONObject("response");
-
-           System.out.println(venue.get("contact").toString());
-           System.out.println("BAJSTOLLE "+venue.toString());
-
-           /*
-           JSONObject contact = (JSONObject) venue.getJSONObject("contact");
-           restaurant.setPhone(contact.getString("phone"));
-           System.out.println("Telefonnummer: "+contact.getString("phone"));
-           */
-
-       }catch (IOException e){
-           System.out.println("HeJ, Funkar ej");
-       }catch (JSONException e){
-           e.printStackTrace();
-           System.out.println("HeJ, Funkar ej JSON");
-       }
-    }
-
     private class VenueHandler extends Thread {
         private Restaurant restaurant;
         private String id;
+        private int index;
 
-        public VenueHandler(Restaurant restaurant, String id){
+        public VenueHandler(Restaurant restaurant, String id, int i){
             this.id = id;
+            index = i;
             this.restaurant = restaurant;
+            System.out.println("VENUEHANDLER: " + this.restaurant.getName());
         }
 
         public void run() {
             try {
                 String newURL = "https://api.foursquare.com/v2/venues/" + id + "?client_id=" + CLIENT_ID + "&client_secret=" + CLIENT_SECRET + "&v=20170331";
-
 
                 URL url = new URL(newURL);
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -188,26 +150,15 @@ public class SearchController extends AsyncTask<String, Void, Void> {
                 String response      = streamToString(urlConnection.getInputStream());
                 JSONObject jsonObj   = (JSONObject) new JSONTokener(response).nextValue();
 
-                //JSONArray venue	    = (JSONArray) jsonObj.getJSONObject("response").getJSONArray("venue");
-                JSONObject venue         = (JSONObject) jsonObj.getJSONObject("response");
+                JSONObject venue     = (JSONObject) jsonObj.getJSONObject("response").getJSONObject("venue");
 
-                try{
-                    //System.out.println(venue.get("contact").toString());
-                    JSONObject contact = (JSONObject) venue.getJSONObject("contact");
-                    String phone = (String) venue.getJSONObject("contact").getString("phone");
-                    System.out.println("TELEFON: " + phone);
-                    //System.out.println("TELEFON: " + contact.getString("phone"));
-                }catch(Exception e){
-                    System.out.println("Exception för contact");
+                JSONObject contact   = (JSONObject) venue.getJSONObject("contact");
+                if(contact.has("phone")) {
+                    restaurant.setPhone(contact.getString("phone"));
+                    System.out.println("TELEFONNUMMER: " + restaurant.getPhone());
+                }else {
+
                 }
-
-                System.out.println("BAJSTOLLE "+venue.toString());
-
-           /*
-           JSONObject contact = (JSONObject) venue.getJSONObject("contact");
-           restaurant.setPhone(contact.getString("phone"));
-           System.out.println("Telefonnummer: "+contact.getString("phone"));
-           */
 
             }catch (IOException e){
                 System.out.println("HeJ, Funkar ej");
@@ -222,25 +173,6 @@ public class SearchController extends AsyncTask<String, Void, Void> {
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
         System.out.println("onPostExecute metoden");
-
-
-        StringBuilder str = new StringBuilder();
-
-        for(int i = 0; i < restaurants.size(); i++){
-            str.append("\nRestarang " + i + ":");
-            str.append("Namn: "+restaurants.get(i).getName());
-            str.append("Adress: "+restaurants.get(i).getAddress());
-            str.append("Avstånd: "+restaurants.get(i).getDistance());
-
-            System.out.println("\nRestarang " + i + ":\n");
-            System.out.println("\nNamn: "+restaurants.get(i).getName()+"\n");
-            System.out.println("\nAdress: "+restaurants.get(i).getAddress()+"\n");
-            System.out.println("\nAvstånd: "+restaurants.get(i).getDistance()+"\n");
-        }
-
         new ResultActivity(restaurants);
-
-        //mainActivity.showAlert(str.toString());
-
     }
 }

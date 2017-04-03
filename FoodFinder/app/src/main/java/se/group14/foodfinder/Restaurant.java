@@ -28,7 +28,6 @@ public class Restaurant {
         this.price = price;
         this.category = category;
         this.hours = hours;
-
     }
 
     public Restaurant() {
@@ -121,7 +120,6 @@ public class Restaurant {
 
     public String getName() {
         return name;
-
     }
 
 
