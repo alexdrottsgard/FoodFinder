@@ -6,14 +6,18 @@ package se.group14.foodfinder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class ResultActivity extends AppCompatActivity {
-    private Restaurant[] restaurants;
+import java.util.ArrayList;
 
-    public ResultActivity(Restaurant[] restaurants) {
+public class ResultActivity extends AppCompatActivity {
+    private ArrayList<Restaurant> restaurants;
+
+    public ResultActivity(ArrayList<Restaurant> restaurants) {
+
         this.restaurants = restaurants;
+        showInfo();
     }
 
-    public void showInfo(Restaurant restaurant) {
+    public void showInfo() {
         
     }
 
