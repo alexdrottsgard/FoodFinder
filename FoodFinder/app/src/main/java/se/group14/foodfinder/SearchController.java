@@ -81,7 +81,6 @@ public class SearchController extends AsyncTask<String, Void, Void> {
             urlConnection.setDoInput(true);
             urlConnection.connect();
 
-
             String response		= streamToString(urlConnection.getInputStream());
             JSONObject jsonObj 	= (JSONObject) new JSONTokener(response).nextValue();
 
@@ -96,6 +95,8 @@ public class SearchController extends AsyncTask<String, Void, Void> {
 
                     Restaurant restaurant = new Restaurant();
 
+                    getVenueInfo(restaurant, venue.getString("id"));
+
                     restaurant.setName(venue.getString("name"));
 
                     String id = venue.getString("id");
@@ -103,7 +104,7 @@ public class SearchController extends AsyncTask<String, Void, Void> {
                     JSONObject location = (JSONObject) venue.getJSONObject("location");
 
                     restaurant.setLatitude(Double.valueOf(location.getString("lat")));
-                    restaurant.setLatitude(Double.valueOf(location.getString("lng")));
+                    restaurant.setLongitude(Double.valueOf(location.getString("lng")));
 
                     restaurant.setAddress(location.getString("formattedAddress"));
                     restaurant.setDistance(location.getInt("distance"));
@@ -127,6 +128,35 @@ public class SearchController extends AsyncTask<String, Void, Void> {
         }
 
         return null;
+    }
+
+    protected void getVenueInfo(Restaurant restaurant, String id) {
+       try {
+           String newURL = "https://api.foursquare.com/v2/venues/" + id + "?client_id=" + CLIENT_ID + "&client_secret=" + CLIENT_SECRET + "&v=20170331";
+
+
+           URL url = new URL(newURL);
+           HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+           urlConnection.setRequestMethod("GET");
+           urlConnection.setDoInput(true);
+           urlConnection.connect();
+
+           String response      = streamToString(urlConnection.getInputStream());
+           JSONObject jsonObj   = (JSONObject) new JSONTokener(response).nextValue();
+
+           //JSONArray venue	    = (JSONArray) jsonObj.getJSONObject("response").getJSONArray("venue");
+           JSONObject venue         = (JSONObject) jsonObj.getJSONObject("response");
+
+           JSONObject contact = (JSONObject) venue.getJSONObject("contact");
+           restaurant.setPhone(contact.getString("phone"));
+           System.out.println("Telefonnummer: "+contact.getString("phone"));
+
+       }catch (IOException e){
+           System.out.println("HeJ, Funkar ej");
+       }catch (JSONException e){
+           e.printStackTrace();
+           System.out.println("HeJ, Funkar ej JSON");
+       }
     }
 
     @Override
