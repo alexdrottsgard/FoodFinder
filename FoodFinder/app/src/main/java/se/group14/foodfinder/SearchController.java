@@ -98,7 +98,7 @@ public class SearchController extends AsyncTask<String, Void, Void> {
 
                     Restaurant restaurant = new Restaurant();
                     restaurant.setName(venue.getString("name"));
-                    new VenueHandler(restaurant,venue.getString("id"),i).start();
+                    restaurant.setId(venue.getString("id"));
 
                     JSONObject location = (JSONObject) venue.getJSONObject("location");
 
@@ -124,6 +124,24 @@ public class SearchController extends AsyncTask<String, Void, Void> {
 
         return null;
     }
+
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        super.onPostExecute(aVoid);
+        System.out.println("onPostExecute metoden");
+        for(int i = 0; i < restaurants.size(); i++) {
+            new VenueHandler(restaurants.get(i),restaurants.get(i).getId(),i).start();
+        }
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        new ResultActivity(restaurants);
+    }
+
 
     private class VenueHandler extends Thread {
         private Restaurant restaurant;
@@ -169,10 +187,4 @@ public class SearchController extends AsyncTask<String, Void, Void> {
         }
     }
 
-    @Override
-    protected void onPostExecute(Void aVoid) {
-        super.onPostExecute(aVoid);
-        System.out.println("onPostExecute metoden");
-        new ResultActivity(restaurants);
-    }
 }
