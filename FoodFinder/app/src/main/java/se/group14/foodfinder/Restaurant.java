@@ -1,14 +1,21 @@
 package se.group14.foodfinder;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by filipheidfors on 2017-03-31.
  */
 
-public class Restaurant {
+public class Restaurant implements Parcelable {
     private String id;
     private String name;
     private String address;
     private String phone;
+
+    public Restaurant(Parcel source) {
+
+    }
 
     public String getId() {
         return id;
@@ -133,4 +140,39 @@ public class Restaurant {
     }
 
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeString(address);
+        dest.writeString(id);
+        dest.writeString(phone);
+        dest.writeDouble(rating);
+        dest.writeInt(price);
+        dest.writeDouble(latitude);
+        dest.writeDouble(longitude);
+        dest.writeString(website);
+        dest.writeString(category);
+        dest.writeString(hours);
+        dest.writeInt(distance);
+
+
+    }
+
+    public static final Parcelable.Creator<Restaurant> CREATOR = new Parcelable.Creator<Restaurant>() {
+
+        @Override
+        public Restaurant createFromParcel(Parcel source) {
+            return new Restaurant(source);
+        }
+
+        @Override
+        public Restaurant[] newArray(int size) {
+            return new Restaurant[size];
+        }
+    };
 }

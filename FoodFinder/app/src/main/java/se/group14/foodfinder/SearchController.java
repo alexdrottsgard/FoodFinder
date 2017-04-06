@@ -1,6 +1,8 @@
 package se.group14.foodfinder;
 
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v7.app.AppCompatActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,8 +43,8 @@ public class SearchController extends AsyncTask<String, Void, Void> {
     }
 
     public void getData() {
-        //execute(API+latitude+","+longitude+"&categoryId=4d4b7105d754a06374d81259&radius="+distance+"&intent=browse&client_id="+CLIENT_ID+"&client_secret="+CLIENT_SECRET+"&v=20170331");
-        execute(API+"40.7,-74&categoryId=4d4b7105d754a06374d81259&radius="+distance+"&intent=browse&client_id="+CLIENT_ID+"&client_secret="+CLIENT_SECRET+"&v=20170331");
+        execute(API+latitude+","+longitude+"&categoryId=4d4b7105d754a06374d81259&radius="+distance+"&intent=browse&client_id="+CLIENT_ID+"&client_secret="+CLIENT_SECRET+"&v=20170331");
+//        execute(API+"40.7,-74&categoryId=4d4b7105d754a06374d81259&radius="+distance+"&intent=browse&client_id="+CLIENT_ID+"&client_secret="+CLIENT_SECRET+"&v=20170331");
     }
 
     private String streamToString(InputStream is) throws IOException {
@@ -139,7 +141,9 @@ public class SearchController extends AsyncTask<String, Void, Void> {
             e.printStackTrace();
         }
 
-        new ResultActivity(restaurants);
+        //Intent intent = new Intent(this, ResultActivity.class);
+        //startActivity(intent);
+        mainActivity.openActivity(restaurants);
     }
 
 
@@ -148,7 +152,7 @@ public class SearchController extends AsyncTask<String, Void, Void> {
         private String id;
         private int index;
 
-        public VenueHandler(Restaurant restaurant, String id, int i){
+        public VenueHandler(Restaurant restaurant, String id, int i) {
             this.id = id;
             index = i;
             this.restaurant = restaurant;
@@ -165,22 +169,22 @@ public class SearchController extends AsyncTask<String, Void, Void> {
                 urlConnection.setDoInput(true);
                 urlConnection.connect();
 
-                String response      = streamToString(urlConnection.getInputStream());
-                JSONObject jsonObj   = (JSONObject) new JSONTokener(response).nextValue();
+                String response = streamToString(urlConnection.getInputStream());
+                JSONObject jsonObj = (JSONObject) new JSONTokener(response).nextValue();
 
-                JSONObject venue     = (JSONObject) jsonObj.getJSONObject("response").getJSONObject("venue");
+                JSONObject venue = (JSONObject) jsonObj.getJSONObject("response").getJSONObject("venue");
 
-                JSONObject contact   = (JSONObject) venue.getJSONObject("contact");
-                if(contact.has("phone")) {
+                JSONObject contact = (JSONObject) venue.getJSONObject("contact");
+
+                if (contact.has("phone")) {
                     restaurant.setPhone(contact.getString("phone"));
                     System.out.println("TELEFONNUMMER: " + restaurant.getPhone());
-                }else {
-
                 }
 
-            }catch (IOException e){
+
+            } catch (IOException e) {
                 System.out.println("HeJ, Funkar ej");
-            }catch (JSONException e){
+            } catch (JSONException e) {
                 e.printStackTrace();
                 System.out.println("HeJ, Funkar ej JSON");
             }

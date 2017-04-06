@@ -20,6 +20,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import java.util.ArrayList;
+
 
 public class MainActivity extends Activity implements AdapterView.OnItemSelectedListener , View.OnClickListener{
     private Spinner priceSpinner;
@@ -177,4 +179,11 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         return  longitude;
     }
 
+    public void openActivity(ArrayList<Restaurant> restaurants) {
+        Intent intent = new Intent(this, ResultActivity.class);
+        intent.putExtra(restaurants);
+        startActivity(intent);
+    }
+
 }
+
