@@ -9,10 +9,6 @@ import android.os.Bundle;
 public class InformationActivity extends AppCompatActivity {
     private Restaurant restaurant;
 
-    public InformationActivity(Restaurant restaurant) {
-        this.restaurant = restaurant;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

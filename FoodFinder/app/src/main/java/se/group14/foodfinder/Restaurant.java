@@ -3,28 +3,17 @@ package se.group14.foodfinder;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.Serializable;
+
 /**
  * Created by filipheidfors on 2017-03-31.
  */
 
-public class Restaurant implements Parcelable {
+public class Restaurant implements Serializable {
     private String id;
     private String name;
     private String address;
     private String phone;
-
-    public Restaurant(Parcel source) {
-
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
     private double rating;
     private double latitude;
     private double longitude;
@@ -34,21 +23,13 @@ public class Restaurant implements Parcelable {
     private String hours;
     private int distance;
 
-    public Restaurant(String name, String address, String phone, double rating, double latitude, double longitude, String website, int price, String category, String hours) {
-        this.name = name;
-        this.address = address;
-        this.phone = phone;
-        this.rating = rating;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.website = website;
-        this.price = price;
-        this.category = category;
-        this.hours = hours;
+
+    public String getId() {
+        return id;
     }
 
-    public Restaurant() {
-
+    public void setId(String id) {
+        this.id = id;
     }
 
     public int getDistance() {
@@ -139,40 +120,4 @@ public class Restaurant implements Parcelable {
         return name;
     }
 
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(name);
-        dest.writeString(address);
-        dest.writeString(id);
-        dest.writeString(phone);
-        dest.writeDouble(rating);
-        dest.writeInt(price);
-        dest.writeDouble(latitude);
-        dest.writeDouble(longitude);
-        dest.writeString(website);
-        dest.writeString(category);
-        dest.writeString(hours);
-        dest.writeInt(distance);
-
-
-    }
-
-    public static final Parcelable.Creator<Restaurant> CREATOR = new Parcelable.Creator<Restaurant>() {
-
-        @Override
-        public Restaurant createFromParcel(Parcel source) {
-            return new Restaurant(source);
-        }
-
-        @Override
-        public Restaurant[] newArray(int size) {
-            return new Restaurant[size];
-        }
-    };
 }

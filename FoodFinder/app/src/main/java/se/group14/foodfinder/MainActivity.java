@@ -34,6 +34,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     private Button testBtn;
     private LocationManager locationManager;
     private LocationListener locationListener;
+    public static final String EXTRA = "arrayList";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -180,8 +181,9 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     }
 
     public void openActivity(ArrayList<Restaurant> restaurants) {
+        System.out.println("OPENACTIVITY METODEN!!!!!!!!!!!");
         Intent intent = new Intent(this, ResultActivity.class);
-        intent.putExtra(restaurants);
+        intent.putExtra("arrayList",restaurants);
         startActivity(intent);
     }
 
