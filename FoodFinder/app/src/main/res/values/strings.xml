@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">FoodFinder</string>
     <string name="restaurantname">RestaurantName</string>
-    <string name="adress_123_3212_stad">Address 123, 3212 Stad</string>
+    <string name="address_123_3212_stad">Address 123, 3212 Stad</string>
 </resources>
