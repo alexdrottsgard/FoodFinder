@@ -176,6 +176,17 @@ public class SearchController extends AsyncTask<String, Void, Void> {
 
                 JSONObject contact = (JSONObject) venue.getJSONObject("contact");
 
+                if(venue.has("url")) {
+                    restaurant.setWebsite(venue.getString("url"));
+                    System.out.println("HEMSIDA:::::::::::" + restaurant.getWebsite());
+                }
+
+                if(venue.has("rating")){
+                    restaurant.setRating(venue.getDouble("rating"));
+                    System.out.println("BETYG:::::::::::" + restaurant.getRating());
+                }
+
+
                 if (contact.has("phone")) {
                     restaurant.setPhone(contact.getString("phone"));
                     System.out.println("TELEFONNUMMER: " + restaurant.getPhone());

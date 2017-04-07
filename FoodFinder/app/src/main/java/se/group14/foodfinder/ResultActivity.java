@@ -68,15 +68,16 @@ public class ResultActivity extends AppCompatActivity {
 
 
         }
+
     }
 
     private class ListListener implements AdapterView.OnItemClickListener {
 
-
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Intent intent = new Intent(ResultActivity.this, InformationActivity.class);
-
+            intent.putExtra("restaurant", restaurants.get(0));
+            startActivity(intent);
         }
     }
 

@@ -8,20 +8,21 @@
 
     <TextView
         android:id="@+id/restaurantName"
-        android:layout_width="329dp"
-        android:layout_height="63dp"
+        android:layout_width="294dp"
+        android:layout_height="88dp"
         android:text="RestaurantName"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintHorizontal_bias="0.512"
+        app:layout_constraintHorizontal_bias="0.066"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/adressField"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="8dp"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.0"
+        tools:layout_editor_absoluteY="11dp" />
 
     <TextView
         android:id="@+id/adressField"
@@ -60,7 +61,7 @@
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintHorizontal_bias="0.511"
-        android:layout_marginBottom="31dp"
+        android:layout_marginBottom="3dp"
         app:layout_constraintBottom_toTopOf="@+id/callButton" />
 
     <Button
@@ -94,12 +95,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Ring"
-        android:layout_marginBottom="19dp"
+        android:layout_marginBottom="-77dp"
         app:layout_constraintBottom_toTopOf="@+id/mapView"
         app:layout_constraintLeft_toRightOf="@+id/getHereButton"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintHorizontal_bias="0.012" />
+
+    <TextView
+        android:id="@+id/rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="8dp" />
 
 </android.support.constraint.ConstraintLayout>
