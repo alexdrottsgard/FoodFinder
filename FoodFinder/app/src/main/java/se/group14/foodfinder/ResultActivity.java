@@ -1,7 +1,5 @@
 package se.group14.foodfinder;
-/**
- * Created by Alexander J. Drottsgård on 2017-03-31.
- */
+
 
 import android.content.Intent;
 import android.os.PersistableBundle;
@@ -16,6 +14,11 @@ import android.widget.ListView;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * Created by Alexander J. Drottsgård on 2017-03-31.
+ * @author Filip Heidfors, Alexander J. Drottsgård
+ * Klassen är UI och ska visa sökresultatet av restauranger i en ListView och på en karta
+ */
 public class ResultActivity extends AppCompatActivity {
     private ArrayList<Restaurant> restaurants;
     private ListView resultView;
@@ -24,6 +27,10 @@ public class ResultActivity extends AppCompatActivity {
     private ArrayAdapter<String> nameAdapter;
     private ArrayAdapter<String> distanceAdapter;
 
+    /**
+     * Metoden som startar activityn
+     * @param savedInstanceState
+     */
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
@@ -51,12 +58,12 @@ public class ResultActivity extends AppCompatActivity {
     }
 
 
-    //Lägg in restauranger i listView
+    //Metod som ska sköta insättningen av data till ListViewn
     public void showInfo() {
         setContentView(R.layout.activity_result);
         resultView = (ListView) findViewById(R.id.resultView);
         nameAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, nameArray);
-        //distanceAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_2, distanceArray);
+//        distanceAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_2, distanceArray);
 
         resultView.setOnItemClickListener(new ListListener());
         resultView.setAdapter(nameAdapter);
@@ -71,12 +78,21 @@ public class ResultActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Inre klass som implementerar Adapterview. Hanterar klick på ListViewn.
+     */
     private class ListListener implements AdapterView.OnItemClickListener {
 
-        @Override
+        /**
+         * Metod som hanterar klick på en rad i ListViewn
+         * @param parent
+         * @param view
+         * @param position Positionen på raden som klickades på
+         * @param id Id för raden som klickades på
+         */
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Intent intent = new Intent(ResultActivity.this, InformationActivity.class);
-            intent.putExtra("restaurant", restaurants.get(0));
+            intent.putExtra("restaurant", restaurants.get(position));
             startActivity(intent);
         }
     }
