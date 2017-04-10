@@ -63,7 +63,7 @@ public class ResultActivity extends AppCompatActivity {
         setContentView(R.layout.activity_result);
         resultView = (ListView) findViewById(R.id.resultView);
         nameAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, nameArray);
-        //distanceAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_2, distanceArray);
+//        distanceAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_2, distanceArray);
 
         resultView.setOnItemClickListener(new ListListener());
         resultView.setAdapter(nameAdapter);
@@ -92,7 +92,7 @@ public class ResultActivity extends AppCompatActivity {
          */
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Intent intent = new Intent(ResultActivity.this, InformationActivity.class);
-            intent.putExtra("restaurant", restaurants.get(0));
+            intent.putExtra("restaurant", restaurants.get(position));
             startActivity(intent);
         }
     }
