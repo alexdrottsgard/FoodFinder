@@ -155,7 +155,7 @@ public class SearchController extends AsyncTask<String, Void, Void> {
         super.onPreExecute();
         progressDialog = new ProgressDialog(mainActivity);
         progressDialog.setMessage("Söker...");
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setProgressStyle(ProgressDialog.BUTTON_NEGATIVE);
         progressDialog.show();
     }
 
