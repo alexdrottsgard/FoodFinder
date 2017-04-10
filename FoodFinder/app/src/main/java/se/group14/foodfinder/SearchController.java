@@ -1,5 +1,6 @@
 package se.group14.foodfinder;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -32,6 +33,7 @@ public class SearchController extends AsyncTask<String, Void, Void> {
     private static final String CLIENT_ID = "QTBTJY4EUWO0TROZGBRZ4I1YZN51DCG4UMM11IBUCWFLHVXF";
     private static final String CLIENT_SECRET = "EX42ZK4A210FHPKT5SK1VXHJCDNAEOXYZUVECOEU1PFNIBEB";
     private ArrayList<Restaurant> restaurants = new ArrayList<Restaurant>();
+    private ProgressDialog progressDialog;
     //private Restaurant restaurant;
 
     /**
@@ -148,6 +150,15 @@ public class SearchController extends AsyncTask<String, Void, Void> {
         return null;
     }
 
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        progressDialog = new ProgressDialog(mainActivity);
+        progressDialog.setMessage("Söker...");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
+    }
+
     /**
      * Metoden körs när doInBackground körts klart i bakgrundstråden och datan hämtats och
      * hanterats (eller misslyckats hämtas) från APIet.
@@ -168,7 +179,9 @@ public class SearchController extends AsyncTask<String, Void, Void> {
 
         //Intent intent = new Intent(MainActivity.this, ResultActivity.class);
         //startActivity(intent);
+        mainActivity.getSearchButton().setEnabled(true);
         mainActivity.openActivity(restaurants);
+        progressDialog.dismiss();
     }
 
     /**
