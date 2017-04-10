@@ -8,34 +8,34 @@
 
     <TextView
         android:id="@+id/restaurantName"
-        android:layout_width="294dp"
-        android:layout_height="88dp"
+        android:layout_width="295dp"
+        android:layout_height="57dp"
         android:text="RestaurantName"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintHorizontal_bias="0.066"
+        app:layout_constraintHorizontal_bias="0.067"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/adressField"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="8dp"
-        app:layout_constraintVertical_bias="0.0"
-        tools:layout_editor_absoluteY="11dp" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/adressField"
-        android:layout_width="324dp"
-        android:layout_height="23dp"
+        android:layout_width="326dp"
+        android:layout_height="33dp"
         android:text="Adress 123, 3212 Stad"
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginBottom="13dp"
-        app:layout_constraintBottom_toTopOf="@+id/openHoursField" />
+        android:layout_marginBottom="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/openHoursField"
+        app:layout_constraintHorizontal_bias="0.119" />
 
     <TextView
         android:id="@+id/openHoursField"
@@ -47,9 +47,11 @@
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintHorizontal_bias="0.511"
-        android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/webbAdressField" />
+        app:layout_constraintHorizontal_bias="0.116"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/webbAdressField"
+        app:layout_constraintTop_toTopOf="@+id/adressField"
+        android:layout_marginTop="8dp" />
 
     <TextView
         android:id="@+id/webbAdressField"
@@ -60,23 +62,24 @@
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintHorizontal_bias="0.511"
-        android:layout_marginBottom="3dp"
+        app:layout_constraintHorizontal_bias="0.116"
+        android:layout_marginBottom="15dp"
         app:layout_constraintBottom_toTopOf="@+id/callButton" />
 
     <Button
         android:id="@+id/getHereButton"
         style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hitta hit"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginLeft="28dp"
+        android:layout_width="109dp"
+        android:layout_height="63dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/mapView"
+        android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
+        android:text="Hitta hit"
+        app:layout_constraintBottom_toTopOf="@+id/mapView"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/webbAdressField"
-        app:layout_constraintVertical_bias="0.676" />
+        app:layout_constraintVertical_bias="0.73"
+        tools:layout_editor_absoluteY="193dp" />
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapView"
@@ -92,16 +95,16 @@
     <Button
         android:id="@+id/callButton"
         style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Ring"
-        android:layout_marginBottom="-77dp"
-        app:layout_constraintBottom_toTopOf="@+id/mapView"
-        app:layout_constraintLeft_toRightOf="@+id/getHereButton"
+        android:layout_width="109dp"
+        android:layout_height="63dp"
+        android:layout_marginBottom="10dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintHorizontal_bias="0.012" />
+        android:text="Ring"
+        app:layout_constraintBottom_toTopOf="@+id/mapView"
+        app:layout_constraintHorizontal_bias="0.037"
+        app:layout_constraintLeft_toRightOf="@+id/getHereButton"
+        app:layout_constraintRight_toRightOf="parent" />
 
     <TextView
         android:id="@+id/rating"
@@ -112,8 +115,8 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.974"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="8dp" />
+        android:layout_marginTop="25dp" />
 
 </android.support.constraint.ConstraintLayout>
