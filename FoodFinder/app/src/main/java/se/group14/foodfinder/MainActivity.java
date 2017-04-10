@@ -22,7 +22,11 @@ import android.widget.Spinner;
 
 import java.util.ArrayList;
 
-
+/**
+ * @author Filip Heidfors, Alexander J. Drottsgård
+ * Applikationen startar i den här klassen. GUI för startsida där användare kan göra en sökning filtrerat
+ * på prisklass och avstånd. (Prisklass ej implementerat ännu)
+ */
 public class MainActivity extends Activity implements AdapterView.OnItemSelectedListener , View.OnClickListener{
     private Spinner priceSpinner;
     private int chosenPrice, chosenDistance;
@@ -36,7 +40,10 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     private LocationListener locationListener;
     public static final String EXTRA = "arrayList";
 
-    @Override
+    /**
+     * Metoden startar klassen
+     * @param savedInstanceState
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -48,7 +55,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         locationListener = new LocationListener() {
-            @Override
+
             public void onLocationChanged(Location location) {
                 System.out.println("onLocationChanged");
                 latitude = location.getLatitude();
@@ -121,11 +128,13 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     }
 
 
-
-
-
-
-    @Override
+    /**
+     * Metoden ska hantera användares val av prisklass från spinnern och lagra valet i en instansvariabel
+     * @param parent
+     * @param view
+     * @param position position/index för spinnern
+     * @param id id för spinnern
+     */
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         switch (position) {
             case 0:
@@ -147,13 +156,21 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         }
     }
 
-    @Override
+    /**
+     * Metoden måste finnas med för klassen implementerar Adapterview
+     * men vi har ingen användning för den
+     * @param parent
+     */
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
 
 
-   @Override
+    /**
+     * Metoden hanterar klick på sökknappen och startar SearchController
+     * som hanterar en sökning med användarens position samt valda prisklass och avstånd
+     * @param v
+     */
     public void onClick(View v) {
        //locationManager.requestLocationUpdates("gps", 5000, 0, locationListener);
         //v = searchButton;
@@ -172,14 +189,28 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         alert.show();
 
     }
+
+    /**
+     *
+     * @return Användarens latitude
+     */
     public double getLatitude() {
         return latitude;
     }
 
+    /**
+     * Användarens longitude
+     * @return
+     */
     public double getLongitude() {
         return  longitude;
     }
 
+    /**
+     * Metoden öppnar en ny activity som ska visa sökresultatet
+     * En lista med Restaurant-objekt som ska visas skickas med
+     * @param restaurants
+     */
     public void openActivity(ArrayList<Restaurant> restaurants) {
         System.out.println("OPENACTIVITY METODEN!!!!!!!!!!!");
         Intent intent = new Intent(this, ResultActivity.class);
