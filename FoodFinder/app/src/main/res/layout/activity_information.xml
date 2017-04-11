@@ -3,20 +3,51 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="#ffffff"
     android:layout_height="match_parent"
     tools:context="se.group14.foodfinder.InformationActivity">
 
+    <Button
+        android:id="@+id/button5"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="109dp"
+        android:layout_height="63dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@color/colorPrimary"
+        android:text="Ring"
+        app:layout_constraintBottom_toTopOf="@+id/mapView"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toRightOf="@+id/getHereButton"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <Button
+        android:id="@+id/website"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="109dp"
+        android:layout_height="63dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@color/colorPrimary"
+        android:text="Hemsida"
+        app:layout_constraintBottom_toTopOf="@+id/mapView"
+        app:layout_constraintHorizontal_bias="0.865"
+        app:layout_constraintLeft_toRightOf="@+id/getHereButton"
+        app:layout_constraintRight_toRightOf="parent" />
+
     <TextView
         android:id="@+id/restaurantName"
-        android:layout_width="295dp"
-        android:layout_height="57dp"
+        android:layout_width="292dp"
+        android:layout_height="104dp"
         android:text="RestaurantName"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintHorizontal_bias="0.067"
+        app:layout_constraintHorizontal_bias="0.068"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/adressField"
         app:layout_constraintTop_toTopOf="parent"
@@ -47,24 +78,9 @@
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintHorizontal_bias="0.116"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/webbAdressField"
+        app:layout_constraintHorizontal_bias="0.186"
         app:layout_constraintTop_toTopOf="@+id/adressField"
         android:layout_marginTop="8dp" />
-
-    <TextView
-        android:id="@+id/webbAdressField"
-        android:layout_width="325dp"
-        android:layout_height="22dp"
-        android:text="www.hemsida.se"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintHorizontal_bias="0.116"
-        android:layout_marginBottom="15dp"
-        app:layout_constraintBottom_toTopOf="@+id/callButton" />
 
     <Button
         android:id="@+id/getHereButton"
@@ -73,13 +89,10 @@
         android:layout_height="63dp"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="8dp"
+        android:background="@color/colorPrimary"
         android:text="Hitta hit"
         app:layout_constraintBottom_toTopOf="@+id/mapView"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/webbAdressField"
-        app:layout_constraintVertical_bias="0.73"
-        tools:layout_editor_absoluteY="193dp" />
+        app:layout_constraintLeft_toLeftOf="parent" />
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapView"
@@ -91,20 +104,6 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="8dp" />
-
-    <Button
-        android:id="@+id/callButton"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="109dp"
-        android:layout_height="63dp"
-        android:layout_marginBottom="9dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:text="Ring"
-        app:layout_constraintBottom_toTopOf="@+id/mapView"
-        app:layout_constraintHorizontal_bias="0.037"
-        app:layout_constraintLeft_toRightOf="@+id/getHereButton"
-        app:layout_constraintRight_toRightOf="parent" />
 
     <TextView
         android:id="@+id/rating"

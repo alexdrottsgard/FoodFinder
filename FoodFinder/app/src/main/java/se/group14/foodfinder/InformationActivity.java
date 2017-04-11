@@ -3,6 +3,7 @@ package se.group14.foodfinder;
  * Created by Alexander J. Drottsgård on 2017-03-31.
  */
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,7 +11,7 @@ import android.view.Window;
 import android.widget.TextView;
 
 
-public class InformationActivity extends AppCompatActivity {
+public class InformationActivity extends Activity {
     private Restaurant restaurant;
     private TextView txtName;
     private TextView txtAddress;
@@ -38,8 +39,8 @@ public class InformationActivity extends AppCompatActivity {
         str = str.replace("[","");
         txtAddress.setText(str);
 
-        txtWebsite = (TextView) findViewById(R.id.webbAdressField);
-        txtWebsite.setText(restaurant.getWebsite());
+        //txtWebsite = (TextView) findViewById(R.id.webbAdressField);
+        //txtWebsite.setText(restaurant.getWebsite());
 
         txtRating = (TextView) findViewById(R.id.rating);
         txtRating.setText(""+restaurant.getRating());

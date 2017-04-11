@@ -1,6 +1,7 @@
 package se.group14.foodfinder;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.PersistableBundle;
@@ -9,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
@@ -23,7 +25,7 @@ import java.util.ArrayList;
  * @author Filip Heidfors, Alexander J. Drottsgård
  * Klassen är UI och ska visa sökresultatet av restauranger i en ListView och på en karta
  */
-public class ResultActivity extends AppCompatActivity {
+public class ResultActivity extends Activity {
     private ArrayList<Restaurant> restaurants;
     private ListView resultView;
     private String[] nameArray;
@@ -37,7 +39,9 @@ public class ResultActivity extends AppCompatActivity {
      */
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_result);
+
         Intent intent = getIntent();
         //restaurants = intent.getParcelableArrayExtra(MainActivity.EXTRA);
         restaurants = (ArrayList<Restaurant>) intent.getSerializableExtra("arrayList");
