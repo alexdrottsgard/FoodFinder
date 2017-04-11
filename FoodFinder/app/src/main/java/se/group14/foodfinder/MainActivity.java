@@ -3,6 +3,7 @@ package se.group14.foodfinder;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -192,11 +193,17 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
 
 
 
-    public void showAlert(String str) {
+    public void noResultAlert(String str) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setMessage(str)
-                .setCancelable(true);
+                .setCancelable(true)
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
         AlertDialog alert = builder.create();
         alert.show();
 

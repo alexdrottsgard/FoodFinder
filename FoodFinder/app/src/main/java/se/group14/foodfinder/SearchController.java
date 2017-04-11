@@ -1,9 +1,7 @@
 package se.group14.foodfinder;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -14,9 +12,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+
 import java.util.ArrayList;
 
 /**
@@ -34,7 +34,6 @@ public class SearchController extends AsyncTask<String, Void, Void> {
     private static final String CLIENT_SECRET = "EX42ZK4A210FHPKT5SK1VXHJCDNAEOXYZUVECOEU1PFNIBEB";
     private ArrayList<Restaurant> restaurants = new ArrayList<Restaurant>();
     private ProgressDialog progressDialog;
-    //private Restaurant restaurant;
 
     /**
      *
@@ -167,20 +166,26 @@ public class SearchController extends AsyncTask<String, Void, Void> {
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
         System.out.println("onPostExecute metoden");
-        for(int i = 0; i < restaurants.size(); i++) {
-            new VenueHandler(restaurants.get(i),restaurants.get(i).getId(),i).start();
-        }
 
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        if(restaurants.size() > 0) {
+            for(int i = 0; i < restaurants.size(); i++) {
+                new VenueHandler(restaurants.get(i),restaurants.get(i).getId(),i).start();
+            }
+
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            mainActivity.openActivity(restaurants);
+        }else {
+            mainActivity.noResultAlert("Sökningen gav inget resultat");
         }
 
         //Intent intent = new Intent(MainActivity.this, ResultActivity.class);
         //startActivity(intent);
         mainActivity.getSearchButton().setEnabled(true);
-        mainActivity.openActivity(restaurants);
+
         progressDialog.dismiss();
     }
 

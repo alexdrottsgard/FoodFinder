@@ -37,6 +37,7 @@ public class ResultActivity extends AppCompatActivity {
      */
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_result);
         Intent intent = getIntent();
         //restaurants = intent.getParcelableArrayExtra(MainActivity.EXTRA);
         restaurants = (ArrayList<Restaurant>) intent.getSerializableExtra("arrayList");
