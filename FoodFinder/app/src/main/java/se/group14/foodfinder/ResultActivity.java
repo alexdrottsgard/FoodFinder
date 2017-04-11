@@ -1,15 +1,19 @@
 package se.group14.foodfinder;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -65,10 +69,17 @@ public class ResultActivity extends AppCompatActivity {
         nameAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, nameArray);
 //        distanceAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_2, distanceArray);
 
+
+        RestaurantListAdapter adapter = new RestaurantListAdapter(getApplicationContext());
+        resultView.setAdapter(adapter);
+
+
         resultView.setOnItemClickListener(new ListListener());
-        resultView.setAdapter(nameAdapter);
+
+
+//        resultView.setAdapter(nameAdapter);
         //resultView.setAdapter(distanceAdapter);
-        nameAdapter.notifyDataSetChanged();
+//        nameAdapter.notifyDataSetChanged();
         //distanceAdapter.notifyDataSetChanged();
 
         for(int i = 0; i < restaurants.size(); i++){
@@ -94,6 +105,49 @@ public class ResultActivity extends AppCompatActivity {
             Intent intent = new Intent(ResultActivity.this, InformationActivity.class);
             intent.putExtra("restaurant", restaurants.get(position));
             startActivity(intent);
+        }
+    }
+
+    /**
+     * Inre klass som extendar BaseAdapter. Hanterar resultView så den kan visa mer information.
+     */
+    private class RestaurantListAdapter extends BaseAdapter {
+
+        private Context mContext;
+
+        public RestaurantListAdapter(Context mContext) {
+            this.mContext = mContext;
+        }
+
+        @Override
+        public int getCount() {
+            return restaurants.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return restaurants.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View view = View.inflate(mContext, R.layout.restaurant_list, null);
+            TextView restaurantName = (TextView) view.findViewById(R.id.restaurantName);
+            TextView distance = (TextView) view.findViewById(R.id.distance);
+            TextView rating = (TextView) view.findViewById(R.id.rating);
+
+            restaurantName.setText(restaurants.get(position).getName());
+            distance.setText(restaurants.get(position).getDistance() + " meter");
+            rating.setText(String.valueOf(restaurants.get(position).getRating() + "/10"));
+
+            view.setTag(restaurants.get(position).getId());
+
+            return view;
         }
     }
 
