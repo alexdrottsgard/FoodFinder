@@ -34,7 +34,7 @@
         android:layout_below="@+id/priceSpinner"
         android:layout_centerHorizontal="true">
 
-        <requestFocus />
+        <requestFocus/>
     </EditText>
 
     <Button
