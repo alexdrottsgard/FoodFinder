@@ -30,7 +30,7 @@ import java.util.ArrayList;
  */
 public class MainActivity extends Activity implements AdapterView.OnItemSelectedListener , View.OnClickListener{
     private Spinner priceSpinner;
-    private int chosenPrice, chosenDistance;
+    private int chosenPrice = 4, chosenDistance = 1000;
     private double longitude;
     private double latitude;
     private Button searchButton;
@@ -187,7 +187,10 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     public void onClick(View v) {
        //locationManager.requestLocationUpdates("gps", 5000, 0, locationListener);
         //v = searchButton;
-        chosenDistance = Integer.parseInt(distanceField.getText().toString());
+        try {
+            chosenDistance = Integer.parseInt(distanceField.getText().toString());
+        }catch(Exception e) {}
+
         new SearchController(chosenDistance, chosenPrice, this, getLatitude(), getLongitude());
     }
 
