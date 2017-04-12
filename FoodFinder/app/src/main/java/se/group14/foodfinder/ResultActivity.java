@@ -141,7 +141,7 @@ public class ResultActivity extends Activity {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            View view = View.inflate(mContext, R.layout.restaurant_list, null);
+            View view = View.inflate(mContext, R.layout.restaurant_list_data, null);
             TextView restaurantName = (TextView) view.findViewById(R.id.restaurantName);
             TextView distance = (TextView) view.findViewById(R.id.distance);
             TextView rating = (TextView) view.findViewById(R.id.rating);
