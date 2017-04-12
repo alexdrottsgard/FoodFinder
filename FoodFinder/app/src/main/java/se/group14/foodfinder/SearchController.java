@@ -26,7 +26,7 @@ import java.util.ArrayList;
  */
 
 public class SearchController extends AsyncTask<String, Void, Void> {
-    private int distance, price;
+    private int distance = 1000, price = 4;
     private double latitude, longitude;
     private MainActivity mainActivity;
     private static final String API = "https://api.foursquare.com/v2/venues/search?ll=";
