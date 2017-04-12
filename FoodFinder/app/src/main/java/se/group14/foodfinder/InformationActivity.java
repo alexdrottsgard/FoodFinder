@@ -5,6 +5,7 @@ package se.group14.foodfinder;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -57,34 +58,32 @@ public class InformationActivity extends Activity {
         btnWeb.setOnClickListener(new ButtonWebsiteListener());
     }
 
-    private class ButtonCallListener implements View.OnClickListener {
+    /**
+     * Lyssnare för klick på ringknappen. Ska öppna telefonappen och ringa restaurang
+     */
+    private class ButtonCallListener extends Activity implements View.OnClickListener {
 
         @Override
         public void onClick(View v) {
             try {
-                Intent callIntent = new Intent(Intent.ACTION_CALL);
-                callIntent.setData(Uri.parse("tel:" + restaurant.getPhone());
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
-                    return;
+                if(restaurant.getPhone() != null) {
+                    Intent ci = new Intent(Intent.ACTION_DIAL);
+                    ci.setData(Uri.parse("tel:" + restaurant.getPhone()));
+                    startActivity(ci);
+                }else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(InformationActivity.this);
+                    builder.setMessage("Telefonnummer finns tyvärr ej tillgängligt för restaurangen")
+                            .setCancelable(true)
+                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            });
+                    AlertDialog alert = builder.create();
+                    alert.show();
                 }
-                if (ActivityCompat.checkSelfPermission(InformationActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
-                    return;
-                }
-                startActivity(callIntent);
+
             } catch (ActivityNotFoundException activityException) {
                 //Log.e("Calling a Phone Number", "Call failed", activityException);
             }
