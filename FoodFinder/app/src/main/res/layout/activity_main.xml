@@ -23,16 +23,16 @@
         style="@style/Widget.AppCompat.EditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/priceSpinner"
+        android:layout_centerHorizontal="true"
         android:layout_gravity="center_vertical|center"
+        android:layout_marginTop="68dp"
         android:ems="10"
         android:hint="Avstånd i meter"
         android:inputType="number"
         android:labelFor="@+id/editText1"
         android:selectAllOnFocus="false"
-        android:singleLine="false"
-        android:layout_marginTop="68dp"
-        android:layout_below="@+id/priceSpinner"
-        android:layout_centerHorizontal="true">
+        android:singleLine="false">
 
         <requestFocus  />
     </EditText>
