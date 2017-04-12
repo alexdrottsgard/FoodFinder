@@ -19,12 +19,17 @@
 
     <ListView
         android:id="@+id/resultView"
-        android:layout_width="368dp"
-        android:layout_height="510dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="0dp"
         android:background="@android:color/background_light"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="h,1:1"
-        tools:layout_editor_absoluteX="8dp"
-        android:layout_marginBottom="-510dp"
-        app:layout_constraintBottom_toTopOf="@+id/resultView" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
