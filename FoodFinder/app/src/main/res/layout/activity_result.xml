@@ -19,8 +19,8 @@
 
     <ListView
         android:id="@+id/resultView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@android:color/background_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="h,1:1"

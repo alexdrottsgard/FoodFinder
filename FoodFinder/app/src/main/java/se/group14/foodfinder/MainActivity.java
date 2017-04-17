@@ -237,8 +237,15 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
      * @param restaurants
      */
     public void openActivity(ArrayList<Restaurant> restaurants) {
+        /*
         System.out.println("OPENACTIVITY METODEN!!!!!!!!!!!");
         Intent intent = new Intent(this, ResultActivity.class);
+        intent.putExtra("arrayList",restaurants);
+        startActivity(intent);
+        */
+
+        System.out.println("OPENACTIVITY METODEN!!!!!!!!!!!");
+        Intent intent = new Intent(this, ResultActivity2.class);
         intent.putExtra("arrayList",restaurants);
         startActivity(intent);
     }

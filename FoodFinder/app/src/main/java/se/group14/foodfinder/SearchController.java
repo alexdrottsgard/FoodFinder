@@ -169,24 +169,15 @@ public class SearchController extends AsyncTask<String, Void, Void> {
 
         if(restaurants.size() > 0) {
             for(int i = 0; i < restaurants.size(); i++) {
-                new VenueHandler(restaurants.get(i),restaurants.get(i).getId(),i).start();
+                new VenueHandler(restaurants.get(i),restaurants.get(i).getId(), i).start();
             }
 
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            mainActivity.openActivity(restaurants);
         }else {
             mainActivity.noResultAlert("Sökningen gav inget resultat");
         }
 
         //Intent intent = new Intent(MainActivity.this, ResultActivity.class);
         //startActivity(intent);
-        mainActivity.getSearchButton().setEnabled(true);
-
-        progressDialog.dismiss();
     }
 
     /**
@@ -201,12 +192,11 @@ public class SearchController extends AsyncTask<String, Void, Void> {
         /**
          * @param restaurant Restaurant-objekt som attribut ska läggas till på
          * @param id Restaurangens id
-         * @param i
          */
         public VenueHandler(Restaurant restaurant, String id, int i) {
             this.id = id;
-            index = i;
             this.restaurant = restaurant;
+            index = i;
             System.out.println("VENUEHANDLER: " + this.restaurant.getName());
         }
 
@@ -214,7 +204,7 @@ public class SearchController extends AsyncTask<String, Void, Void> {
          * Run metoden för tråden som gör en API request och hanterar datan och lägger till
          * attribut till Restaurang objektet
          */
-        public void run() {
+        public synchronized void run() {
             try {
                 String newURL = "https://api.foursquare.com/v2/venues/" + id + "?client_id=" + CLIENT_ID + "&client_secret=" + CLIENT_SECRET + "&v=20170331";
 
@@ -247,6 +237,11 @@ public class SearchController extends AsyncTask<String, Void, Void> {
                     System.out.println("TELEFONNUMMER: " + restaurant.getPhone());
                 }
 
+                if(index == restaurants.size()-1) {
+                    mainActivity.openActivity(restaurants);
+                    mainActivity.getSearchButton().setEnabled(true);
+                    progressDialog.dismiss();
+                }
 
             } catch (IOException e) {
                 System.out.println("HeJ, Funkar ej");
