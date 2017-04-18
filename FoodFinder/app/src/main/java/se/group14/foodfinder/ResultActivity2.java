@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.view.Window;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
@@ -44,9 +45,11 @@ public class ResultActivity2 extends AppCompatActivity {
     private ArrayList<Restaurant> restaurants;
     private Tab1List list;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle("Restauranger");
         setContentView(R.layout.activity_result2);
 
         Intent intent = getIntent();
