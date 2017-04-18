@@ -116,7 +116,6 @@ public class ResultActivity2 extends AppCompatActivity {
                     return map;
                 default:
                     return null;
-
             }
         }
 
