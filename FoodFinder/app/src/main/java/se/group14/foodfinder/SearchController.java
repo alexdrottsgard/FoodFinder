@@ -1,5 +1,6 @@
 package se.group14.foodfinder;
 
+import android.accounts.NetworkErrorException;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 
@@ -13,8 +14,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 
 import java.util.ArrayList;
@@ -34,6 +37,7 @@ public class SearchController extends AsyncTask<String, Void, Void> {
     private static final String CLIENT_SECRET = "EX42ZK4A210FHPKT5SK1VXHJCDNAEOXYZUVECOEU1PFNIBEB";
     private ArrayList<Restaurant> restaurants = new ArrayList<Restaurant>();
     private ProgressDialog progressDialog;
+    private static int error = 0;
 
     /**
      *
@@ -58,7 +62,7 @@ public class SearchController extends AsyncTask<String, Void, Void> {
      */
     public void getData() {
         //execute(API+latitude+","+longitude+"&categoryId=4d4b7105d754a06374d81259&radius="+distance+"&intent=browse&client_id="+CLIENT_ID+"&client_secret="+CLIENT_SECRET+"&v=20170331");
-        execute(API+"40.7,-74&categoryId=4d4b7105d754a06374d81259&radius="+distance+"&intent=browse&client_id="+CLIENT_ID+"&client_secret="+CLIENT_SECRET+"&v=20170331");
+        execute(API+"55.609069,12.994678&categoryId=4d4b7105d754a06374d81259&limit=50&radius="+distance+"&intent=browse&client_id="+CLIENT_ID+"&client_secret="+CLIENT_SECRET+"&v=20170331");
     }
 
     /**
@@ -136,14 +140,24 @@ public class SearchController extends AsyncTask<String, Void, Void> {
                 }
             }
 
-        }catch (MalformedURLException e) {
+        } catch (MalformedURLException e) {
             //e.printStackTrace();
             System.out.println("MALFORMED URL");
+            error = 1;
+            mainActivity.errorAlert("Fel med url");
+        } catch (ConnectException e) {
+            error = 4;
+            mainActivity.errorAlert("Ooops! Något gick fel. Kanske internet? ¯\\_(ツ)_/¯");
+        } catch (SocketTimeoutException se) {
+            error = 5;
         } catch (IOException e) {
             //e.printStackTrace();
             System.out.println("IOEXCEPTION");
+            error = 2;
         } catch (JSONException e) {
             e.printStackTrace();
+            error = 3;
+            mainActivity.errorAlert(e.getMessage());
         }
 
         return null;
@@ -166,18 +180,31 @@ public class SearchController extends AsyncTask<String, Void, Void> {
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
         System.out.println("onPostExecute metoden");
+        switch (error) {
+            case 0:
+                if(restaurants.size() > 0) {
+                    for(int i = 0; i < restaurants.size(); i++) {
+                        new VenueHandler(restaurants.get(i),restaurants.get(i).getId(), i).start();
+                        try {
+                            Thread.sleep(100);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
 
-        if(restaurants.size() > 0) {
-            for(int i = 0; i < restaurants.size(); i++) {
-                new VenueHandler(restaurants.get(i),restaurants.get(i).getId(), i).start();
-            }
-
-        }else {
-            mainActivity.noResultAlert("Sökningen gav inget resultat");
+                }else {
+                    mainActivity.errorAlert("Ooops! Sökningen gav inget resultat ¯\\_(ツ)_/¯ \nPröva öka ditt avstånd");
+                    mainActivity.getSearchButton().setEnabled(true);
+                    progressDialog.dismiss();
+                }
+                break;
+            default:
+                mainActivity.errorAlert("Ooops! Kunde inte ansluta till servern ¯\\_(ツ)_/¯");
+                mainActivity.getSearchButton().setEnabled(true);
+                progressDialog.dismiss();
+                error = 0;
         }
 
-        //Intent intent = new Intent(MainActivity.this, ResultActivity.class);
-        //startActivity(intent);
     }
 
     /**
@@ -221,6 +248,18 @@ public class SearchController extends AsyncTask<String, Void, Void> {
 
                 JSONObject contact = (JSONObject) venue.getJSONObject("contact");
 
+                if(venue.has("price")) {
+                    JSONObject price = (JSONObject) venue.getJSONObject("price");
+                    restaurant.setPrice(price.getInt("tier"));
+                }else {
+                    restaurant.setPrice(0);
+                }
+
+                if (contact.has("phone")) {
+                    restaurant.setPhone(contact.getString("phone"));
+                    System.out.println("TELEFONNUMMER: " + restaurant.getPhone());
+                }
+
                 if(venue.has("url")) {
                     restaurant.setWebsite(venue.getString("url"));
                     System.out.println("HEMSIDA:::::::::::" + restaurant.getWebsite());
@@ -231,12 +270,6 @@ public class SearchController extends AsyncTask<String, Void, Void> {
                     System.out.println("BETYG:::::::::::" + restaurant.getRating());
                 }
 
-
-                if (contact.has("phone")) {
-                    restaurant.setPhone(contact.getString("phone"));
-                    System.out.println("TELEFONNUMMER: " + restaurant.getPhone());
-                }
-
                 if(index == restaurants.size()-1) {
                     mainActivity.openActivity(restaurants);
                     mainActivity.getSearchButton().setEnabled(true);
@@ -245,9 +278,13 @@ public class SearchController extends AsyncTask<String, Void, Void> {
 
             } catch (IOException e) {
                 System.out.println("HeJ, Funkar ej");
+                mainActivity.errorAlert("Något gick fel");
             } catch (JSONException e) {
                 e.printStackTrace();
                 System.out.println("HeJ, Funkar ej JSON");
+                mainActivity.errorAlert("Något gick fel");
+            } catch (Exception e) {
+                mainActivity.errorAlert("Något gick fel");
             }
         }
     }

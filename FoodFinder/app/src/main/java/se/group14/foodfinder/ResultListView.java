@@ -1,6 +1,5 @@
 package se.group14.foodfinder;
 
-//import android.app.Fragment;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -10,61 +9,47 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Created by filipheidfors on 2017-04-17.
  */
 
-public class Tab1List extends Fragment {
+public class ResultListView extends Fragment implements Comparator<Restaurant> {
     private Activity activity;
     private ArrayList<Restaurant> restaurants;
     private ListView resultView;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.tab1listview, container, false);
+        View rootView = inflater.inflate(R.layout.result_list_view, container, false);
         resultView = (ListView) rootView.findViewById(R.id.resultView);
+        Collections.sort(restaurants,this);
         showInfo();
         return rootView;
     }
-
 
     public void setArguments(ArrayList<Restaurant> restaurants, Activity a) {
         this.restaurants = restaurants;
         activity = a;
     }
 
-    //Metod som ska sköta insättningen av data till ListViewn
-    public void showInfo() {
-        //setContentView(R.layout.activity_result);
-        //nameAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, nameArray);
-//        distanceAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_2, distanceArray);
-
-        RestaurantListAdapter adapter = new RestaurantListAdapter(activity.getApplicationContext());
-        resultView.setAdapter(adapter);
-
-
-        resultView.setOnItemClickListener(new ListListener());
-
-
-//        resultView.setAdapter(nameAdapter);
-        //resultView.setAdapter(distanceAdapter);
-//        nameAdapter.notifyDataSetChanged();
-        //distanceAdapter.notifyDataSetChanged();
-
-        for(int i = 0; i < restaurants.size(); i++){
-
-
-        }
-
+    public int compare(Restaurant o1, Restaurant o2) {
+        return (int) (o2.getRating()*10) - (int) (o1.getRating()*10);
     }
 
+    //Metod som ska sköta insättningen av data till ListViewn
+    public void showInfo() {
+        RestaurantListAdapter adapter = new RestaurantListAdapter(activity.getApplicationContext());
+        resultView.setAdapter(adapter);
+        resultView.setOnItemClickListener(new ListListener());
+    }
 
     /**
      * Inre klass som extendar BaseAdapter. Hanterar resultView så den kan visa mer information.
@@ -101,7 +86,8 @@ public class Tab1List extends Fragment {
 
             restaurantName.setText(restaurants.get(position).getName());
             distance.setText(restaurants.get(position).getDistance() + " meter");
-            rating.setText(String.valueOf(restaurants.get(position).getRating() + "/10"));
+            String ratingString = (restaurants.get(position).getRating() == 0.0) ? "?" : ""+restaurants.get(position).getRating();
+            rating.setText(String.valueOf(ratingString + "/10"));
 
             view.setTag(restaurants.get(position).getId());
 
@@ -127,6 +113,5 @@ public class Tab1List extends Fragment {
             startActivity(intent);
         }
     }
-
 
 }

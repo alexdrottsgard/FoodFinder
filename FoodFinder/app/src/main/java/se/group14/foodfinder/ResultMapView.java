@@ -11,11 +11,11 @@ import android.view.ViewGroup;
  * Created by filipheidfors on 2017-04-17.
  */
 
-public class Tab2Map extends Fragment {
+public class ResultMapView extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.tab2mapview, container, false);
+        View rootView = inflater.inflate(R.layout.result_map_view, container, false);
 
         return rootView;
     }

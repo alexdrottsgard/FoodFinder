@@ -1,159 +1,142 @@
 package se.group14.foodfinder;
 
-
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.os.PersistableBundle;
-import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.support.v7.widget.Toolbar;
 
-import java.io.Serializable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+
 import java.util.ArrayList;
 
-/**
- * Created by Alexander J. Drottsgård on 2017-03-31.
- * @author Filip Heidfors, Alexander J. Drottsgård
- * Klassen är UI och ska visa sökresultatet av restauranger i en ListView och på en karta
- */
-public class ResultActivity extends Activity {
-    private ArrayList<Restaurant> restaurants;
-    private ListView resultView;
-    private String[] nameArray;
-    private String[] distanceArray;
-    private ArrayAdapter<String> nameAdapter;
-    private ArrayAdapter<String> distanceAdapter;
+public class ResultActivity extends AppCompatActivity {
 
     /**
-     * Metoden som startar activityn
-     * @param savedInstanceState
+     * The {@link android.support.v4.view.PagerAdapter} that will provide
+     * fragments for each of the sections. We use a
+     * {@link FragmentPagerAdapter} derivative, which will keep every
+     * loaded fragment in memory. If this becomes too memory intensive, it
+     * may be best to switch to a
+     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
-    public void onCreate(Bundle savedInstanceState) {
+    private SectionsPagerAdapter mSectionsPagerAdapter;
+
+    /**
+     * The {@link ViewPager} that will host the section contents.
+     */
+    private ViewPager mViewPager;
+
+    private ArrayList<Restaurant> tempRestaurants;
+    private ArrayList<Restaurant> restaurants = new ArrayList<Restaurant>();
+    private ResultListView list;
+    private int price;
+
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setTitle("Restauranger");
         setContentView(R.layout.activity_result);
 
         Intent intent = getIntent();
         //restaurants = intent.getParcelableArrayExtra(MainActivity.EXTRA);
-        restaurants = (ArrayList<Restaurant>) intent.getSerializableExtra("arrayList");
+        tempRestaurants = (ArrayList<Restaurant>) intent.getSerializableExtra("arrayList");
+        System.out.println("ANTAL RESTAURANGER!!!!::::::::" + tempRestaurants.size());
+        price = (int) intent.getIntExtra("price",0);
+        System.out.println(price);
 
-        System.out.println("ONCREATE I RESULTACTIVITY!!!!!!");
-        System.out.println(restaurants.size());
-        nameArray = new String[restaurants.size()];
-        distanceArray = new String[restaurants.size()];
-        for(int i = 0; i < restaurants.size(); i++){
-
-            System.out.println("I RESULTACTIVITY BIATXHZ");
-            System.out.println("\nRestarang " + i + ":\n");
-            System.out.println("\nNamn: "+restaurants.get(i).getName()+"\n");
-            System.out.println("\nAdress: "+restaurants.get(i).getAddress()+"\n");
-            System.out.println("\nAvstånd: "+restaurants.get(i).getDistance()+"\n");
-            System.out.println("\nTelefonnummer: "+restaurants.get(i).getPhone()+"\n");
-
-            nameArray[i] = restaurants.get(i).getName();
-            distanceArray[i] = ""+restaurants.get(i).getDistance();
+        for(int i = 0; i < tempRestaurants.size(); i++) {
+            if(tempRestaurants.get(i).getPrice() <= price && tempRestaurants.get(i).getPrice() != 0) {
+                restaurants.add(tempRestaurants.get(i));
+            }
         }
+        System.out.println("ANTAL RESTAURANGER EFTER BORTTAGNING!!!!::::::::" + restaurants.size());
 
-        showInfo();
+        list = new ResultListView();
+        list.setArguments(restaurants, this);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        // Create the adapter that will return a fragment for each of the three
+        // primary sections of the activity.
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+
+        // Set up the ViewPager with the sections adapter.
+        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mViewPager);
     }
 
 
-    //Metod som ska sköta insättningen av data till ListViewn
-    public void showInfo() {
-        setContentView(R.layout.activity_result);
-        resultView = (ListView) findViewById(R.id.resultView);
-        nameAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, nameArray);
-//        distanceAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_2, distanceArray);
-
-
-        RestaurantListAdapter adapter = new RestaurantListAdapter(getApplicationContext());
-        resultView.setAdapter(adapter);
-
-
-        resultView.setOnItemClickListener(new ListListener());
-
-
-//        resultView.setAdapter(nameAdapter);
-        //resultView.setAdapter(distanceAdapter);
-//        nameAdapter.notifyDataSetChanged();
-        //distanceAdapter.notifyDataSetChanged();
-
-        for(int i = 0; i < restaurants.size(); i++){
-
-
-        }
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_result_activity2, menu);
+        return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    //Deleted Placeholderfragment from here
     /**
-     * Inre klass som implementerar Adapterview. Hanterar klick på ListViewn.
+     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
+     * one of the sections/tabs/pages.
      */
-    private class ListListener implements AdapterView.OnItemClickListener {
+    public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        /**
-         * Metod som hanterar klick på en rad i ListViewn
-         * @param parent
-         * @param view
-         * @param position Positionen på raden som klickades på
-         * @param id Id för raden som klickades på
-         */
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            Intent intent = new Intent(ResultActivity.this, InformationActivity.class);
-            intent.putExtra("restaurant", restaurants.get(position));
-            startActivity(intent);
+        public SectionsPagerAdapter(FragmentManager fm) {
+            super(fm);
         }
-    }
 
-    /**
-     * Inre klass som extendar BaseAdapter. Hanterar resultView så den kan visa mer information.
-     */
-    private class RestaurantListAdapter extends BaseAdapter {
-
-        private Context mContext;
-
-        public RestaurantListAdapter(Context mContext) {
-            this.mContext = mContext;
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                    return list;
+                case 1:
+                    ResultMapView map = new ResultMapView();
+                    return map;
+                default:
+                    return null;
+            }
         }
 
         @Override
         public int getCount() {
-            return restaurants.size();
+            // Show 2 total pages.
+            return 2;
         }
 
         @Override
-        public Object getItem(int position) {
-            return restaurants.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View view = View.inflate(mContext, R.layout.restaurant_list_data, null);
-            TextView restaurantName = (TextView) view.findViewById(R.id.restaurantName);
-            TextView distance = (TextView) view.findViewById(R.id.distance);
-            TextView rating = (TextView) view.findViewById(R.id.rating);
-
-            restaurantName.setText(restaurants.get(position).getName());
-            distance.setText(restaurants.get(position).getDistance() + " meter");
-            rating.setText(String.valueOf(restaurants.get(position).getRating() + "/10"));
-
-            view.setTag(restaurants.get(position).getId());
-
-            return view;
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+                case 0:
+                    return "Lista";
+                case 1:
+                    return "Karta";
+            }
+            return null;
         }
     }
+
 
 }

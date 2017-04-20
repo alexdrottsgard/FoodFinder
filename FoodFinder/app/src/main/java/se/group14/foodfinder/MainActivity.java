@@ -35,7 +35,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     private double latitude;
     private Button searchButton;
     private EditText distanceField;
-    private static final String[] priceClass = {"Prisklass 1", "Prisklass 2", "Prisklass 3", "Prisklass 4"};
+    private static final String[] priceClass = {"Välj prisklass","Prisklass 1", "Prisklass 2", "Prisklass 3", "Prisklass 4"};
     private Button testBtn;
     private LocationManager locationManager;
     private LocationListener locationListener;
@@ -55,6 +55,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         distanceField = (EditText) findViewById(R.id.distance);
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
         locationListener = new LocationListener() {
 
             /**
@@ -88,23 +89,21 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
                 startActivity(intent);
             }
         };
+
+
         configureButton();
 
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_item, priceClass);
-
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            priceSpinner.setAdapter(adapter);
-            priceSpinner.setOnItemSelectedListener(this);
-
-
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_item, priceClass);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        priceSpinner.setAdapter(adapter);
+        priceSpinner.setOnItemSelectedListener(this);
     }
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case 10:
-                    configureButton();
+                configureButton();
                 break;
             default:
                 break;
@@ -126,20 +125,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
 
         //uppdaterar koordinater, görs även var femte sekund.
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 0, locationListener);
-
-            /*
-            searchButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    System.out.println("onClick method");
-
-                    chosenDistance = Integer.parseInt(distanceField.getText().toString());
-                    new SearchController(chosenDistance, chosenPrice, MainActivity.this, latitude, longitude);
-                }
-            });
-            */
     }
-
 
     /**
      * Metoden ska hantera användares val av prisklass från spinnern och lagra valet i en instansvariabel
@@ -151,19 +137,22 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         switch (position) {
             case 0:
-                chosenPrice = position+1;
-                System.out.println(chosenPrice);
+                chosenPrice = 4;
                 break;
             case 1:
-                chosenPrice = position+1;
+                chosenPrice = position;
                 System.out.println(chosenPrice);
                 break;
             case 2:
-                chosenPrice = position+1;
+                chosenPrice = position;
                 System.out.println(chosenPrice);
                 break;
             case 3:
-                chosenPrice = position+1;
+                chosenPrice = position;
+                System.out.println(chosenPrice);
+                break;
+            case 4:
+                chosenPrice = position;
                 System.out.println(chosenPrice);
                 break;
         }
@@ -174,10 +163,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
      * men vi har ingen användning för den
      * @param parent
      */
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
-
+    public void onNothingSelected(AdapterView<?> parent) {}
 
     /**
      * Metoden hanterar klick på sökknappen och startar SearchController
@@ -185,8 +171,6 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
      * @param v
      */
     public void onClick(View v) {
-       //locationManager.requestLocationUpdates("gps", 5000, 0, locationListener);
-        //v = searchButton;
         try {
             chosenDistance = Integer.parseInt(distanceField.getText().toString());
         }catch(Exception e) {}
@@ -194,9 +178,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         new SearchController(chosenDistance, chosenPrice, this, getLatitude(), getLongitude());
     }
 
-
-
-    public void noResultAlert(String str) {
+    public void errorAlert(String str) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setMessage(str)
@@ -207,9 +189,9 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
 
                     }
                 });
+
         AlertDialog alert = builder.create();
         alert.show();
-
     }
 
     /**
@@ -237,16 +219,10 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
      * @param restaurants
      */
     public void openActivity(ArrayList<Restaurant> restaurants) {
-        /*
         System.out.println("OPENACTIVITY METODEN!!!!!!!!!!!");
         Intent intent = new Intent(this, ResultActivity.class);
         intent.putExtra("arrayList",restaurants);
-        startActivity(intent);
-        */
-
-        System.out.println("OPENACTIVITY METODEN!!!!!!!!!!!");
-        Intent intent = new Intent(this, ResultActivity2.class);
-        intent.putExtra("arrayList",restaurants);
+        intent.putExtra("price", chosenPrice);
         startActivity(intent);
     }
 
