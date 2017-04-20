@@ -95,7 +95,24 @@ public class InformationActivity extends Activity {
 
         @Override
         public void onClick(View v) {
+            if(restaurant.getWebsite() != null) {
+                Uri uri = Uri.parse(restaurant.getWebsite());
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+            }else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(InformationActivity.this);
+                builder.setMessage("Hemsida finns ej tillgänglig för den här restaurangen ¯\\_(ツ)_/¯")
+                        .setCancelable(true)
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
 
+                            }
+                        });
+
+                AlertDialog alert = builder.create();
+                alert.show();
+            }
         }
     }
 
