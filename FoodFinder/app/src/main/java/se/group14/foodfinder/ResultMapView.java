@@ -1,6 +1,7 @@
 package se.group14.foodfinder;
 
 //import android.app.Fragment;
+import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,11 +15,15 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
+
 /**
  * Created by filipheidfors on 2017-04-17.
  */
 
 public class ResultMapView extends Fragment implements OnMapReadyCallback{
+    private Activity activity;
+    private ArrayList<Restaurant> restaurants;
     private MapView mapView;
     private GoogleMap mGoogleMap;
 
@@ -29,6 +34,7 @@ public class ResultMapView extends Fragment implements OnMapReadyCallback{
         mapView = (MapView) rootView.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
+        //addMarkers();
         return rootView;
     }
 
@@ -38,7 +44,19 @@ public class ResultMapView extends Fragment implements OnMapReadyCallback{
         mGoogleMap.getUiSettings().setZoomControlsEnabled(true);
 
         LatLng pos = new LatLng(55.609069,12.99467);
-        mGoogleMap.addMarker(new MarkerOptions().position(pos));
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pos, 10));
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pos, 100));
+        addMarkers();
+    }
+
+    public void setArguments(ArrayList<Restaurant> restaurants, Activity a) {
+        this.restaurants = restaurants;
+        activity = a;
+    }
+
+    public void addMarkers() {
+        for(int i = 0; i < restaurants.size(); i++) {
+            LatLng latlng = new LatLng(restaurants.get(i).getLatitude(), restaurants.get(i).getLongitude());
+            mGoogleMap.addMarker(new MarkerOptions().position(latlng));
+        }
     }
 }

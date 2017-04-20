@@ -35,6 +35,7 @@ public class ResultActivity extends AppCompatActivity {
     private ArrayList<Restaurant> tempRestaurants;
     private ArrayList<Restaurant> restaurants = new ArrayList<Restaurant>();
     private ResultListView list;
+    private ResultMapView map;
     private int price;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +58,9 @@ public class ResultActivity extends AppCompatActivity {
 
         list = new ResultListView();
         list.setArguments(restaurants, this);
+
+        map = new ResultMapView();
+        map.setArguments(restaurants, this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -112,7 +116,6 @@ public class ResultActivity extends AppCompatActivity {
                 case 0:
                     return list;
                 case 1:
-                    ResultMapView map = new ResultMapView();
                     return map;
                 default:
                     return null;
