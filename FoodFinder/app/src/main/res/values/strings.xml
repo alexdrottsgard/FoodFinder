@@ -7,4 +7,6 @@
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_result3">ResultActivity3</string>
     <string name="title_activity_result4">ResultActivity4</string>
+    <string name="title_activity_result_maps">Map</string>
+    <string name="title_activity_maps">Map</string>
 </resources>

@@ -43,7 +43,6 @@ public class ResultActivity extends AppCompatActivity {
         setContentView(R.layout.activity_result);
 
         Intent intent = getIntent();
-        //restaurants = intent.getParcelableArrayExtra(MainActivity.EXTRA);
         tempRestaurants = (ArrayList<Restaurant>) intent.getSerializableExtra("arrayList");
         System.out.println("ANTAL RESTAURANGER!!!!::::::::" + tempRestaurants.size());
         price = (int) intent.getIntExtra("price",0);
