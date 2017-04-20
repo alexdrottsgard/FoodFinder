@@ -44,7 +44,7 @@ public class ResultMapView extends Fragment implements OnMapReadyCallback{
         mGoogleMap.getUiSettings().setZoomControlsEnabled(true);
 
         LatLng pos = new LatLng(55.609069,12.99467);
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pos, 100));
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pos, 12));
         addMarkers();
     }
 
