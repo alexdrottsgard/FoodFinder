@@ -13,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 import android.widget.*;
@@ -61,7 +62,7 @@ public class InformationActivity extends Activity {
     /**
      * Lyssnare för klick på ringknappen. Ska öppna telefonappen och ringa restaurang
      */
-    private class ButtonCallListener extends Activity implements View.OnClickListener {
+    private class ButtonCallListener implements View.OnClickListener {
 
         @Override
         public void onClick(View v) {
@@ -69,7 +70,7 @@ public class InformationActivity extends Activity {
                 if(restaurant.getPhone() != null) {
                     Intent ci = new Intent(Intent.ACTION_DIAL);
                     ci.setData(Uri.parse("tel:" + restaurant.getPhone()));
-                    startActivity(ci);
+                    InformationActivity.this.startActivity(ci);
                 }else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(InformationActivity.this);
                     builder.setMessage("Telefonnummer finns tyvärr ej tillgängligt för restaurangen")
