@@ -13,6 +13,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 
 public class ResultActivity extends AppCompatActivity {
@@ -37,6 +39,7 @@ public class ResultActivity extends AppCompatActivity {
     private ResultListView list;
     private ResultMapView map;
     private int price;
+    private LatLng userPosition;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +50,9 @@ public class ResultActivity extends AppCompatActivity {
         tempRestaurants = (ArrayList<Restaurant>) intent.getSerializableExtra("arrayList");
         System.out.println("ANTAL RESTAURANGER!!!!::::::::" + tempRestaurants.size());
         price = (int) intent.getIntExtra("price",0);
-        System.out.println(price);
+        double lat = (double) intent.getDoubleExtra("lat",0);
+        double lng = (double) intent.getDoubleExtra("lng", 0);
+        userPosition = new LatLng(lat,lng);
 
         for(int i = 0; i < tempRestaurants.size(); i++) {
             if(tempRestaurants.get(i).getPrice() <= price && tempRestaurants.get(i).getPrice() != 0) {
@@ -60,7 +65,7 @@ public class ResultActivity extends AppCompatActivity {
         list.setArguments(restaurants, this);
 
         map = new ResultMapView();
-        map.setArguments(restaurants, this);
+        map.setArguments(restaurants,userPosition,this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

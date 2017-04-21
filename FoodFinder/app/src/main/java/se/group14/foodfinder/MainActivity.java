@@ -21,6 +21,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 
 /**
@@ -223,6 +225,8 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         Intent intent = new Intent(this, ResultActivity.class);
         intent.putExtra("arrayList",restaurants);
         intent.putExtra("price", chosenPrice);
+        intent.putExtra("lat", getLatitude());
+        intent.putExtra("lng", getLongitude());
         startActivity(intent);
     }
 
