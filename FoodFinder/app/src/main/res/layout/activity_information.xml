@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="#ffffff"
+    android:background="#FFF46165"
     android:layout_height="match_parent"
     tools:context="se.group14.foodfinder.InformationActivity">
 
@@ -12,14 +12,15 @@
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="100dp"
         android:layout_height="60dp"
-        android:layout_marginTop="8dp"
-        android:background="@color/colorPrimary"
-        android:text="Ring"
-        app:layout_constraintTop_toBottomOf="@+id/openHoursField"
-        app:layout_constraintLeft_toRightOf="@+id/btn_get_here"
         android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:background="#FFFFFF"
+        android:text="Ring"
+        android:textColor="@android:color/black"
+        app:layout_constraintLeft_toRightOf="@+id/btn_get_here"
         app:layout_constraintRight_toLeftOf="@+id/btn_website"
-        android:layout_marginRight="8dp" />
+        app:layout_constraintTop_toBottomOf="@+id/openHoursField" />
 
     <Button
         android:id="@+id/btn_website"
@@ -29,55 +30,60 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="8dp"
-        android:background="@color/colorPrimary"
+        android:background="#FFFFFF"
         android:text="Hemsida"
+        android:textColor="@android:color/black"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/openHoursField" />
 
     <TextView
         android:id="@+id/restaurantName"
-        android:layout_width="298dp"
-        android:layout_height="81dp"
+        android:layout_width="287dp"
+        android:layout_height="65dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="cursive"
         android:text="RestaurantName"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:layout_marginLeft="8dp"
+        android:textColor="@android:color/background_light"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="16dp"
-        android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintHorizontal_bias="0.0" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/adressField"
-        android:layout_width="298dp"
-        android:layout_height="50dp"
+        android:layout_width="285dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="0dp"
         android:text="Adress 123, 3212 Stad"
         android:textAppearance="@style/TextAppearance.AppCompat"
-        android:layout_marginLeft="8dp"
+        android:textColor="@android:color/background_light"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/restaurantName"
-        android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintHorizontal_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/restaurantName" />
 
     <TextView
         android:id="@+id/openHoursField"
-        android:layout_width="298dp"
-        android:layout_height="40dp"
+        android:layout_width="285dp"
+        android:layout_height="27dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="0dp"
         android:text="Öppetider: 09-18"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:layout_marginLeft="8dp"
+        android:textColor="@android:color/background_light"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/adressField"
-        android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintHorizontal_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/adressField" />
 
     <Button
         android:id="@+id/btn_get_here"
@@ -87,8 +93,9 @@
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:background="@color/colorPrimary"
+        android:background="#FFFFFF"
         android:text="Hitta hit"
+        android:textColor="@android:color/black"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/openHoursField" />
 
@@ -99,6 +106,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="0dp"
         android:elevation="3dp"
+        android:fontFamily="cursive"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -110,13 +118,14 @@
         android:id="@+id/rating"
         android:layout_width="58dp"
         android:layout_height="41dp"
-        android:text="TextView"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="16dp"
         android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginRight="8dp"
+        android:layout_marginTop="31dp"
+        android:text="TextView"
+        android:textColor="@android:color/background_light"
+        app:layout_constraintHorizontal_bias="0.974"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintHorizontal_bias="1.0" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
