@@ -236,22 +236,21 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
      */
     public void openActivity(ArrayList<Restaurant> restaurants) {
         if(random) {
-            Intent intent = new Intent(this, InformationActivity.class);
-
-            intent.putExtra("restaurant",restaurants.get(rand.nextInt(restaurants.size())));
-            //intent.putExtra("price", chosenPrice);
-            intent.putExtra("lat", getLatitude());
-            intent.putExtra("lng", getLongitude());
-            startActivity(intent);
-        }else {
             ArrayList<Restaurant> newRestaurants = new ArrayList<Restaurant>();
             for(int i = 0; i < restaurants.size(); i++) {
                 if(restaurants.get(i).getPrice() <= chosenPrice) {
                     newRestaurants.add(restaurants.get(i));
                 }
             }
+            Intent intent = new Intent(this, InformationActivity.class);
+            intent.putExtra("restaurant",restaurants.get(rand.nextInt(newRestaurants.size())));
+            //intent.putExtra("price", chosenPrice);
+            intent.putExtra("lat", getLatitude());
+            intent.putExtra("lng", getLongitude());
+            startActivity(intent);
+        }else {
             Intent intent = new Intent(this, ResultActivity.class);
-            intent.putExtra("arrayList",newRestaurants);
+            intent.putExtra("arrayList",restaurants);
             intent.putExtra("lat", getLatitude());
             intent.putExtra("lng", getLongitude());
             startActivity(intent);
