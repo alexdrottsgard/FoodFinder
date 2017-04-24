@@ -3,41 +3,20 @@ package se.group14.foodfinder;
  * Created by Alexander J. Drottsgård on 2017-03-31.
  */
 
-import android.Manifest;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.ActivityNotFoundException;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
+import android.app.*;
+import android.content.*;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
+import android.view.*;
 import android.widget.*;
-
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.MapsInitializer;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.*;
+import com.google.android.gms.maps.model.*;
 
 
 public class InformationActivity extends Activity implements OnMapReadyCallback {
     private Restaurant restaurant;
-    private TextView txtName;
-    private TextView txtAddress;
-    private TextView txtWebsite;
-    private TextView txtRating;
+    private TextView txtName, txtAddress, txtRating;
     private Button btnCall, btnWeb, btnGetHere;
-    private View view;
     private GoogleMap mGoogleMap;
     private MapView mapView;
 
@@ -81,12 +60,7 @@ public class InformationActivity extends Activity implements OnMapReadyCallback 
         }
     }
 
-
-
-    @Override
     public void onMapReady(GoogleMap googleMap) {
-        //MapsInitializer.initialize(getContext());
-
         mGoogleMap = googleMap;
         mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         mGoogleMap.getUiSettings().setZoomControlsEnabled(true);
