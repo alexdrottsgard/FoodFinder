@@ -2,7 +2,9 @@ package se.group14.foodfinder;
 
 import android.accounts.NetworkErrorException;
 import android.app.ProgressDialog;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.widget.ProgressBar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -170,6 +172,7 @@ public class SearchController extends AsyncTask<String, Void, Void> {
         progressDialog.setMessage("Söker...");
         progressDialog.setProgressStyle(ProgressDialog.BUTTON_NEGATIVE);
         progressDialog.show();
+
     }
 
     /**

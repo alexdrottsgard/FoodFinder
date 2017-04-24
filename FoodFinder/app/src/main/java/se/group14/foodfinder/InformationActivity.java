@@ -24,7 +24,7 @@ public class InformationActivity extends Activity implements OnMapReadyCallback 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_information);
+        setContentView(R.layout.activity_information2);
 
         Intent intent = getIntent();
         restaurant = (Restaurant) intent.getSerializableExtra("restaurant");
