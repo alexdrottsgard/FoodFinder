@@ -130,7 +130,9 @@ public class InformationActivity extends Activity implements OnMapReadyCallback 
 
         @Override
         public void onClick(View v) {
-
+            Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                    Uri.parse("http://maps.google.com/maps?daddr="+restaurant.getLatitude()+","+restaurant.getLongitude()));
+            startActivity(intent);
         }
     }
 }
