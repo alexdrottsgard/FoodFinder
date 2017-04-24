@@ -38,7 +38,6 @@ public class ResultMapView extends Fragment implements OnMapReadyCallback, Googl
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.result_map_view, container, false);
-        //addMarkers();
         return view;
     }
 
@@ -76,8 +75,9 @@ public class ResultMapView extends Fragment implements OnMapReadyCallback, Googl
     public void addMarkers() {
         Marker marker;
         MarkerOptions markerOptions;
+        LatLng latlng;
         for(int i = 0; i < restaurants.size(); i++) {
-            LatLng latlng = new LatLng(restaurants.get(i).getLatitude(), restaurants.get(i).getLongitude());
+            latlng = new LatLng(restaurants.get(i).getLatitude(), restaurants.get(i).getLongitude());
             markerOptions = new MarkerOptions(); //.position(latlng).title(restaurants.get(i).getName()).snippet(restaurants.get(i).getDistance() + " meter");
             markerOptions.position(latlng);
             markerOptions.title(restaurants.get(i).getName());

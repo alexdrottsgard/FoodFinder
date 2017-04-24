@@ -1,8 +1,7 @@
 package se.group14.foodfinder;
 
 import android.Manifest;
-import android.app.Activity;
-import android.app.AlertDialog;
+import android.app.*;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -15,33 +14,28 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.*;
 
-import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * @author Filip Heidfors, Alexander J. Drottsgård
  * Applikationen startar i den här klassen. GUI för startsida där användare kan göra en sökning filtrerat
  * på prisklass och avstånd. (Prisklass ej implementerat ännu)
  */
-public class MainActivity extends Activity implements AdapterView.OnItemSelectedListener , View.OnClickListener{
+public class MainActivity extends Activity implements AdapterView.OnItemSelectedListener {
     private Spinner priceSpinner;
     private int chosenPrice = 4, chosenDistance = 1000;
-    private double longitude;
-    private double latitude;
-    private Button searchButton;
+    private double longitude, latitude;
+    private Button searchButton, randomButton;
     private EditText distanceField;
     private static final String[] priceClass = {"Välj prisklass","Prisklass 1", "Prisklass 2", "Prisklass 3", "Prisklass 4"};
-    private Button testBtn;
     private LocationManager locationManager;
     private LocationListener locationListener;
-    public static final String EXTRA = "arrayList";
+    private boolean random = false;
+    private Random rand = new Random();
 
     /**
      * Metoden startar klassen
@@ -53,7 +47,9 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
 
         priceSpinner = (Spinner) findViewById(R.id.priceSpinner);
         searchButton = (Button) findViewById(R.id.searchButton);
-        searchButton.setOnClickListener(this);
+        searchButton.setOnClickListener(new SearchButtonListener());
+        randomButton = (Button) findViewById(R.id.randomButton);
+        randomButton.setOnClickListener(new RandomButtonListener());
         distanceField = (EditText) findViewById(R.id.distance);
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -91,7 +87,6 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
                 startActivity(intent);
             }
         };
-
 
         configureButton();
 
@@ -167,17 +162,34 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
      */
     public void onNothingSelected(AdapterView<?> parent) {}
 
-    /**
-     * Metoden hanterar klick på sökknappen och startar SearchController
-     * som hanterar en sökning med användarens position samt valda prisklass och avstånd
-     * @param v
-     */
-    public void onClick(View v) {
-        try {
-            chosenDistance = Integer.parseInt(distanceField.getText().toString());
-        }catch(Exception e) {}
+    private class SearchButtonListener implements View.OnClickListener {
+        /**
+         * Metoden hanterar klick på sökknappen och startar SearchController
+         * som hanterar en sökning med användarens position samt valda prisklass och avstånd
+         * @param v
+         */
+        public void onClick(View v) {
+            try {
+                chosenDistance = Integer.parseInt(distanceField.getText().toString());
+            }catch(Exception e) {}
+            random = false;
+            new SearchController(chosenDistance, chosenPrice, MainActivity.this, getLatitude(), getLongitude());
+        }
+    }
 
-        new SearchController(chosenDistance, chosenPrice, this, getLatitude(), getLongitude());
+    private class RandomButtonListener implements View.OnClickListener {
+        /**
+         * Metoden hanterar klick på slumpknappen och startar SearchController
+         * som hanterar en sökning med användarens position samt valda prisklass och avstånd
+         * @param v
+         */
+        public void onClick(View v) {
+            try {
+                chosenDistance = Integer.parseInt(distanceField.getText().toString());
+            }catch(Exception e) {}
+            random = true;
+            new SearchController(chosenDistance, chosenPrice, MainActivity.this, getLatitude(), getLongitude());
+        }
     }
 
     public void errorAlert(String str) {
@@ -215,19 +227,35 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     public Button getSearchButton() {
         return searchButton;
     }
+
     /**
      * Metoden öppnar en ny activity som ska visa sökresultatet
      * En lista med Restaurant-objekt som ska visas skickas med
+     * (eller gå direkt till InformationActivity om det är slumpat)
      * @param restaurants
      */
     public void openActivity(ArrayList<Restaurant> restaurants) {
-        System.out.println("OPENACTIVITY METODEN!!!!!!!!!!!");
-        Intent intent = new Intent(this, ResultActivity.class);
-        intent.putExtra("arrayList",restaurants);
-        intent.putExtra("price", chosenPrice);
-        intent.putExtra("lat", getLatitude());
-        intent.putExtra("lng", getLongitude());
-        startActivity(intent);
+        if(random) {
+            ArrayList<Restaurant> newRestaurants = new ArrayList<Restaurant>();
+            for(int i = 0; i < restaurants.size(); i++) {
+                if(restaurants.get(i).getPrice() <= chosenPrice) {
+                    newRestaurants.add(restaurants.get(i));
+                }
+            }
+            Intent intent = new Intent(this, InformationActivity.class);
+            intent.putExtra("restaurant",restaurants.get(rand.nextInt(newRestaurants.size())));
+            //intent.putExtra("price", chosenPrice);
+            intent.putExtra("lat", getLatitude());
+            intent.putExtra("lng", getLongitude());
+            startActivity(intent);
+        }else {
+            Intent intent = new Intent(this, ResultActivity.class);
+            intent.putExtra("arrayList",restaurants);
+            intent.putExtra("lat", getLatitude());
+            intent.putExtra("lng", getLongitude());
+            startActivity(intent);
+        }
+
     }
 
 }
