@@ -35,7 +35,6 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     private LocationManager locationManager;
     private LocationListener locationListener;
     private boolean random = false;
-    private Random rand = new Random();
 
     /**
      * Metoden startar klassen
@@ -236,6 +235,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
      */
     public void openActivity(ArrayList<Restaurant> restaurants) {
         if(random) {
+            Random rand = new Random();
             ArrayList<Restaurant> newRestaurants = new ArrayList<Restaurant>();
             for(int i = 0; i < restaurants.size(); i++) {
                 if(restaurants.get(i).getPrice() <= chosenPrice) {
@@ -244,13 +244,13 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
             }
             Intent intent = new Intent(this, InformationActivity.class);
             intent.putExtra("restaurant",restaurants.get(rand.nextInt(newRestaurants.size())));
-            //intent.putExtra("price", chosenPrice);
             intent.putExtra("lat", getLatitude());
             intent.putExtra("lng", getLongitude());
             startActivity(intent);
         }else {
             Intent intent = new Intent(this, ResultActivity.class);
             intent.putExtra("arrayList",restaurants);
+            intent.putExtra("price", chosenPrice);
             intent.putExtra("lat", getLatitude());
             intent.putExtra("lng", getLongitude());
             startActivity(intent);
