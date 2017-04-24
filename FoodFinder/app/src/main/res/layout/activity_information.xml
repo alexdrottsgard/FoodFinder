@@ -14,13 +14,15 @@
         android:layout_height="50dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="26dp"
         android:background="#E3FFFFFF"
         android:text="Ring"
         android:textColor="@android:color/black"
         app:layout_constraintLeft_toRightOf="@+id/btn_get_here"
         app:layout_constraintRight_toLeftOf="@+id/btn_website"
-        app:layout_constraintTop_toBottomOf="@+id/openHoursField" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp" />
 
     <Button
         android:id="@+id/btn_website"
@@ -28,36 +30,37 @@
         android:layout_width="88dp"
         android:layout_height="50dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginRight="59dp"
-        android:layout_marginTop="26dp"
+        android:layout_marginRight="16dp"
         android:background="#E3FFFFFF"
         android:text="Hemsida"
         android:textColor="@android:color/black"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/openHoursField" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="16dp" />
 
     <TextView
         android:id="@+id/restaurantName"
         android:layout_width="273dp"
         android:layout_height="85dp"
-        android:layout_marginLeft="8dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="16dp"
         android:fontFamily="cursive"
         android:text="RestaurantName"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:textColor="@android:color/background_light"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.084"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginEnd="8dp" />
 
     <TextView
         android:id="@+id/adressField"
         android:layout_width="285dp"
         android:layout_height="40dp"
-        android:layout_marginLeft="8dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="11dp"
@@ -67,51 +70,52 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/restaurantName" />
+        app:layout_constraintTop_toBottomOf="@+id/restaurantName"
+        android:layout_marginEnd="8dp" />
 
     <TextView
         android:id="@+id/openHoursField"
         android:layout_width="285dp"
         android:layout_height="27dp"
-        android:layout_marginLeft="8dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="0dp"
         android:text="Öppetider: 09-18"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="@android:color/background_light"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/adressField" />
+        app:layout_constraintTop_toBottomOf="@+id/adressField"
+        android:layout_marginEnd="8dp" />
 
     <Button
         android:id="@+id/btn_get_here"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="88dp"
         android:layout_height="50dp"
-        android:layout_marginLeft="-15dp"
+        android:layout_marginLeft="0dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="26dp"
         android:background="#E3FFFFFF"
         android:text="Hitta hit"
         android:textColor="@android:color/black"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/openHoursField" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="16dp" />
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="0dp"
         android:elevation="3dp"
         android:fontFamily="cursive"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_call"
+        app:layout_constraintTop_toBottomOf="@+id/openHoursField"
+        app:layout_constraintHorizontal_bias="0.0"
+        android:layout_marginBottom="14dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_call"
+        android:layout_marginTop="14dp"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
@@ -126,6 +130,8 @@
         app:layout_constraintHorizontal_bias="0.974"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp" />
 
 </android.support.constraint.ConstraintLayout>
