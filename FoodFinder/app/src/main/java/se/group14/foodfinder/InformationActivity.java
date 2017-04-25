@@ -20,7 +20,7 @@ import com.google.android.gms.maps.model.*;
 
 public class InformationActivity extends Activity implements OnMapReadyCallback{
     private Restaurant restaurant;
-    private TextView txtName, txtAddress, txtRating;
+    private TextView txtName, txtAddress, txtRating, txtOpen;
     private Button btnCall, btnWeb, btnGetHere;
     private GoogleMap mGoogleMap;
     private MapView mapView;
@@ -36,6 +36,9 @@ public class InformationActivity extends Activity implements OnMapReadyCallback{
 
         txtName = (TextView) findViewById(R.id.restaurantName);
         txtName.setText(restaurant.getName());
+
+        txtOpen = (TextView) findViewById(R.id.open);
+        txtOpen.setText(restaurant.getOpen());
 
         txtAddress = (TextView) findViewById(R.id.adressField);
 
