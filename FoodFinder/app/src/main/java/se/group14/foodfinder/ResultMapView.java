@@ -51,7 +51,6 @@ public class ResultMapView extends Fragment implements OnMapReadyCallback, Googl
             mapView.onResume();
             mapView.getMapAsync(this);
         }
-
     }
 
     @Override
@@ -61,6 +60,11 @@ public class ResultMapView extends Fragment implements OnMapReadyCallback, Googl
         mGoogleMap = googleMap;
         mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         mGoogleMap.getUiSettings().setZoomControlsEnabled(true);
+        try{
+            mGoogleMap.setMyLocationEnabled(true);
+        }catch (SecurityException se) {
+
+        }
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userPosition, 15));
         mGoogleMap.setOnInfoWindowClickListener(this);
         addMarkers();
@@ -76,12 +80,13 @@ public class ResultMapView extends Fragment implements OnMapReadyCallback, Googl
         Marker marker;
         MarkerOptions markerOptions;
         LatLng latlng;
+
         for(int i = 0; i < restaurants.size(); i++) {
             latlng = new LatLng(restaurants.get(i).getLatitude(), restaurants.get(i).getLongitude());
             markerOptions = new MarkerOptions(); //.position(latlng).title(restaurants.get(i).getName()).snippet(restaurants.get(i).getDistance() + " meter");
             markerOptions.position(latlng);
             markerOptions.title(restaurants.get(i).getName());
-            markerOptions.snippet(restaurants.get(i).getDistance() + " meter\n" + restaurants.get(i).getRating() + "/10");
+            markerOptions.snippet(restaurants.get(i).getDistance() + " meter       " + restaurants.get(i).getRating() + "/10");
             marker = mGoogleMap.addMarker(markerOptions);
             hashMap.put(marker,restaurants.get(i));
         }

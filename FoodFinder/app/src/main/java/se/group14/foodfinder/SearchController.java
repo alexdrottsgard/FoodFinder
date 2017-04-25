@@ -168,11 +168,11 @@ public class SearchController extends AsyncTask<String, Void, Void> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+
         progressDialog = new ProgressDialog(mainActivity);
         progressDialog.setMessage("Söker...");
         progressDialog.setProgressStyle(ProgressDialog.BUTTON_NEGATIVE);
         progressDialog.show();
-
     }
 
     /**
@@ -189,7 +189,7 @@ public class SearchController extends AsyncTask<String, Void, Void> {
                     for(int i = 0; i < restaurants.size(); i++) {
                         new VenueHandler(restaurants.get(i),restaurants.get(i).getId(), i).start();
                         try {
-                            Thread.sleep(100);
+                            Thread.sleep(10);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
