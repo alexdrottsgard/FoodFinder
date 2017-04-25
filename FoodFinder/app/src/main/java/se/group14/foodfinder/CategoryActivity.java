@@ -45,7 +45,6 @@ public class CategoryActivity extends Activity {
 
                 String selected = "";
                 int cntChoice = CategoryList.getCount();
-
                 SparseBooleanArray sparseBooleanArray = CategoryList.getCheckedItemPositions();
 
                 for(int i = 0; i < cntChoice; i++){

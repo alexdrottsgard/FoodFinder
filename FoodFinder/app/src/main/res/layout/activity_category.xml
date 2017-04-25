@@ -30,7 +30,6 @@
             />
 
         <ListView
-
             android:id="@+id/categoryList"
 
             android:layout_width="fill_parent"
