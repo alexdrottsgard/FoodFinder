@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.util.SparseBooleanArray;
 import android.view.View;
 import android.widget.*;
 
@@ -27,17 +28,19 @@ import java.util.Random;
  */
 public class MainActivity extends Activity implements AdapterView.OnItemSelectedListener {
     private Spinner priceSpinner;
+    private Button categoryButton;
     private int chosenPrice = 4, chosenDistance = 1000;
     private double longitude, latitude;
     private Button searchButton, randomButton;
     private EditText distanceField;
-    private static final String[] priceClass = {"Välj prisklass","Prisklass 1", "Prisklass 2", "Prisklass 3", "Prisklass 4"};
+    private static final String[] priceClass = {"Välj prisklass", "Luffare", "Arbetarklass", "Medelklass", "Överklass"};
     private LocationManager locationManager;
     private LocationListener locationListener;
     private boolean random = false;
 
     /**
      * Metoden startar klassen
+     *
      * @param savedInstanceState
      */
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +48,8 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         setContentView(R.layout.activity_main);
 
         priceSpinner = (Spinner) findViewById(R.id.priceSpinner);
+        categoryButton = (Button) findViewById(R.id.categoryButton);
+        categoryButton.setOnClickListener(new CategoryBtnListener());
         searchButton = (Button) findViewById(R.id.searchButton);
         searchButton.setOnClickListener(new SearchButtonListener());
         randomButton = (Button) findViewById(R.id.randomButton);
@@ -93,6 +98,16 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         priceSpinner.setAdapter(adapter);
         priceSpinner.setOnItemSelectedListener(this);
+
+    }
+
+    private class CategoryBtnListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(MainActivity.this, CategoryActivity.class);
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -125,10 +140,11 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
 
     /**
      * Metoden ska hantera användares val av prisklass från spinnern och lagra valet i en instansvariabel
+     *
      * @param parent
      * @param view
      * @param position position/index för spinnern
-     * @param id id för spinnern
+     * @param id       id för spinnern
      */
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         switch (position) {
@@ -157,20 +173,24 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     /**
      * Metoden måste finnas med för klassen implementerar Adapterview
      * men vi har ingen användning för den
+     *
      * @param parent
      */
-    public void onNothingSelected(AdapterView<?> parent) {}
+    public void onNothingSelected(AdapterView<?> parent) {
+    }
 
     private class SearchButtonListener implements View.OnClickListener {
         /**
          * Metoden hanterar klick på sökknappen och startar SearchController
          * som hanterar en sökning med användarens position samt valda prisklass och avstånd
+         *
          * @param v
          */
         public void onClick(View v) {
             try {
                 chosenDistance = Integer.parseInt(distanceField.getText().toString());
-            }catch(Exception e) {}
+            } catch (Exception e) {
+            }
             random = false;
             new SearchController(chosenDistance, chosenPrice, MainActivity.this, getLatitude(), getLongitude());
         }
@@ -180,12 +200,14 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         /**
          * Metoden hanterar klick på slumpknappen och startar SearchController
          * som hanterar en sökning med användarens position samt valda prisklass och avstånd
+         *
          * @param v
          */
         public void onClick(View v) {
             try {
                 chosenDistance = Integer.parseInt(distanceField.getText().toString());
-            }catch(Exception e) {}
+            } catch (Exception e) {
+            }
             random = true;
             new SearchController(chosenDistance, chosenPrice, MainActivity.this, getLatitude(), getLongitude());
         }
@@ -208,7 +230,6 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     }
 
     /**
-     *
      * @return Användarens latitude
      */
     public double getLatitude() {
@@ -217,10 +238,11 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
 
     /**
      * Användarens longitude
+     *
      * @return
      */
     public double getLongitude() {
-        return  longitude;
+        return longitude;
     }
 
     public Button getSearchButton() {
@@ -231,25 +253,26 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
      * Metoden öppnar en ny activity som ska visa sökresultatet
      * En lista med Restaurant-objekt som ska visas skickas med
      * (eller gå direkt till InformationActivity om det är slumpat)
+     *
      * @param restaurants
      */
     public void openActivity(ArrayList<Restaurant> restaurants) {
-        if(random) {
+        if (random) {
             Random rand = new Random();
             ArrayList<Restaurant> newRestaurants = new ArrayList<Restaurant>();
-            for(int i = 0; i < restaurants.size(); i++) {
-                if(restaurants.get(i).getPrice() <= chosenPrice) {
+            for (int i = 0; i < restaurants.size(); i++) {
+                if (restaurants.get(i).getPrice() <= chosenPrice) {
                     newRestaurants.add(restaurants.get(i));
                 }
             }
             Intent intent = new Intent(this, InformationActivity.class);
-            intent.putExtra("restaurant",restaurants.get(rand.nextInt(newRestaurants.size())));
+            intent.putExtra("restaurant", restaurants.get(rand.nextInt(newRestaurants.size())));
             intent.putExtra("lat", getLatitude());
             intent.putExtra("lng", getLongitude());
             startActivity(intent);
-        }else {
+        } else {
             Intent intent = new Intent(this, ResultActivity.class);
-            intent.putExtra("arrayList",restaurants);
+            intent.putExtra("arrayList", restaurants);
             intent.putExtra("price", chosenPrice);
             intent.putExtra("lat", getLatitude());
             intent.putExtra("lng", getLongitude());
@@ -258,5 +281,6 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
 
     }
 
-}
+
+        }
 
