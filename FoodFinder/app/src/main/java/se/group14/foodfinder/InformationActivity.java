@@ -3,17 +3,22 @@ package se.group14.foodfinder;
  * Created by Alexander J. Drottsgård on 2017-03-31.
  */
 
+import android.Manifest;
 import android.app.*;
 import android.content.*;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.*;
+import android.support.v4.app.Fragment;
 import android.view.*;
 import android.widget.*;
+
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
 
 
-public class InformationActivity extends Activity implements OnMapReadyCallback {
+public class InformationActivity extends Activity implements OnMapReadyCallback{
     private Restaurant restaurant;
     private TextView txtName, txtAddress, txtRating;
     private Button btnCall, btnWeb, btnGetHere;
@@ -53,17 +58,24 @@ public class InformationActivity extends Activity implements OnMapReadyCallback 
 
         mapView = (MapView) findViewById(R.id.mapView);
 
-        if(mapView != null) {
+        if (mapView != null) {
             mapView.onCreate(null);
             mapView.onResume();
             mapView.getMapAsync(this);
         }
+
     }
+
 
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
         mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         mGoogleMap.getUiSettings().setZoomControlsEnabled(true);
+        try{
+            mGoogleMap.setMyLocationEnabled(true);
+        }catch (SecurityException se) {
+
+        }
         LatLng pos = new LatLng(restaurant.getLatitude(),restaurant.getLongitude());
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pos, 15));
         mGoogleMap.addMarker(new MarkerOptions().position(pos).title(restaurant.getName()));
