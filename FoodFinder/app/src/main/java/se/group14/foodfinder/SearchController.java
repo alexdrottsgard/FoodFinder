@@ -268,9 +268,23 @@ public class SearchController extends AsyncTask<String, Void, Void> {
                     System.out.println("HEMSIDA:::::::::::" + restaurant.getWebsite());
                 }
 
-                if(venue.has("rating")){
+                if(venue.has("rating")) {
                     restaurant.setRating(venue.getDouble("rating"));
                     System.out.println("BETYG:::::::::::" + restaurant.getRating());
+                }
+
+                if(venue.has("hours")) {
+                    JSONObject hours = venue.getJSONObject("hours");
+                    boolean open = hours.getBoolean("isOpen");
+                    System.out.println("ÖPPET OR NAH???? :::::::::" + open);
+                    if(open) {
+                        restaurant.setOpen("Öppet just nu");
+                    }else {
+                        restaurant.setOpen("Stängt just nu");
+                    }
+
+                }else {
+                    restaurant.setOpen("");
                 }
 
                 if(index == restaurants.size()-1) {

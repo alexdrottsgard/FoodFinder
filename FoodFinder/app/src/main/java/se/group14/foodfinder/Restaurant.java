@@ -22,6 +22,7 @@ public class Restaurant implements Serializable {
     private String category;
     private String hours;
     private int distance;
+    private String open;
 
 
     public String getId() {
@@ -88,6 +89,10 @@ public class Restaurant implements Serializable {
         this.hours = hours;
     }
 
+    public void setOpen(String str) {
+        open = str;
+    }
+
     public double getRating() {
         return rating;
     }
@@ -118,6 +123,10 @@ public class Restaurant implements Serializable {
 
     public String getName() {
         return name;
+    }
+
+    public String getOpen() {
+        return open;
     }
 
 }
