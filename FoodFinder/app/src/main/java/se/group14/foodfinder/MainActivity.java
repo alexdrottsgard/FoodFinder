@@ -26,19 +26,21 @@ import java.util.Random;
  * på prisklass och avstånd. (Prisklass ej implementerat ännu)
  */
 public class MainActivity extends Activity implements AdapterView.OnItemSelectedListener {
-    private Spinner priceSpinner;
-    private Button categoryButton;
     private int chosenPrice = 4, chosenDistance = 1000;
     private double longitude, latitude;
-    private Button searchButton, randomButton;
+    private Button searchButton, randomButton,categoryButton, priceButton;;
     private EditText distanceField;
-    private static final String[] priceClass = {"Välj prisklass", "Luffare", "Arbetarklass", "Medelklass", "Överklass"};
-    final CharSequence[] categories = {"Asiatiskt", "Hamburgare", "Husmanskost", "Italienskt"};
+    private static final String[] priceClass = {"$", "$$", "$$$", "$$$$"};
+    final CharSequence[] categories = {"Markera alla", "Avmarkera alla","Asiatiskt", "Hamburgare", "Husmanskost", "Italienskt",
+            "hduhdud", "hfuheueherw", "hfuh73h3432","hfuh4h43h5","fhuh3u43u2h55",
+            "hfuh5uh235uh325"};
     final ArrayList seletedCategories = new ArrayList();
+    //private ArrayList<Integer> selectedPrices = new ArrayList<Integer>();
     private LocationManager locationManager;
     private LocationListener locationListener;
     private boolean random = false;
     private String selectedCategories;
+    private AlertDialog priceAlert;
 
     /**
      * Metoden startar klassen
@@ -49,9 +51,12 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        priceSpinner = (Spinner) findViewById(R.id.priceSpinner);
+        setUpPriceAlert();
+
         categoryButton = (Button) findViewById(R.id.categoryButton);
         categoryButton.setOnClickListener(new CategoryBtnListener());
+        priceButton = (Button) findViewById(R.id.priceBtn);
+        priceButton.setOnClickListener(new PriceButtonListener());
         searchButton = (Button) findViewById(R.id.searchButton);
         searchButton.setOnClickListener(new SearchButtonListener());
         randomButton = (Button) findViewById(R.id.randomButton);
@@ -96,10 +101,10 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
 
         configureButton();
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_item, priceClass);
-        adapter.setDropDownViewResource(android.R.layout.select_dialog_multichoice);
-        priceSpinner.setAdapter(adapter);
-        priceSpinner.setOnItemSelectedListener(this);
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_item, priceClass);
+//        adapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
+//        priceSpinner.setAdapter(adapter);
+//        priceSpinner.setOnItemSelectedListener(this);
     }
 
     @Override
@@ -180,22 +185,24 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
                     public void onClick(DialogInterface dialog, int indexSelected, boolean isChecked) {
                         if (isChecked) {
                             // If the user checked the item, add it to the selected items
+                            if(indexSelected == 0){
+                                ListView listView = ((AlertDialog) dialog).getListView();
+                                for(int i = 2; i < categories.length; i++) {
+                                    listView.setItemChecked(i,true);
+                                }
+                            }
+
                             seletedCategories.add(indexSelected);
                         } else if (seletedCategories.contains(indexSelected)) {
                             // Else, if the item is already in the array, remove it
                             seletedCategories.remove(Integer.valueOf(indexSelected));
                         }
                     }
-                }).setPositiveButton("Välj", new DialogInterface.OnClickListener() {
+                }).setPositiveButton("Klar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         //  Your code when user clicked on OK
                         //  You can write the code  to save the selected item here
-                    }
-                }).setNegativeButton("Stäng", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        //  Your code when user clicked on Cancel
                     }
                 });
 
@@ -204,6 +211,43 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         @Override
         public void onClick(View v) {
             categoryAlert.show();
+        }
+    }
+
+    public void setUpPriceAlert() {
+        AlertDialog.Builder ab = new AlertDialog.Builder(MainActivity.this)
+                .setTitle("Välj maximal prisklass")
+                .setMultiChoiceItems(priceClass, null, new DialogInterface.OnMultiChoiceClickListener() {
+
+                    public void onClick(DialogInterface dialog, int indexSelected, boolean isChecked) {
+
+                            // If the user checked the item, add it to the selected items
+                            ((AlertDialog) dialog).getListView().setItemChecked(0,false);
+                            ((AlertDialog) dialog).getListView().setItemChecked(1,false);
+                            ((AlertDialog) dialog).getListView().setItemChecked(2,false);
+                            ((AlertDialog) dialog).getListView().setItemChecked(3,false);
+                            ((AlertDialog) dialog).getListView().setItemChecked(indexSelected,true);
+
+                            chosenPrice = indexSelected+1;
+                            priceButton.setText(priceClass[indexSelected]);
+                            System.out.println("VALD PRISKLASS::::::" + chosenPrice);
+                    }
+                }).setPositiveButton("Klar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        //  Your code when user clicked on OK
+                        //  You can write the code  to save the selected item here
+                    }
+                });
+
+        priceAlert = ab.create();
+    }
+
+    private class PriceButtonListener implements View.OnClickListener {
+
+        public void onClick(View v) {
+            priceAlert.show();
+            priceAlert.getListView().setItemChecked(chosenPrice-1,true);
         }
     }
 
@@ -285,29 +329,39 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
      * @param restaurants
      */
     public void openActivity(ArrayList<Restaurant> restaurants) {
+        ArrayList<Restaurant> newRestaurants = new ArrayList<Restaurant>();
         if (random) {
+            System.out.println("RANDOM");
             Random rand = new Random();
-            ArrayList<Restaurant> newRestaurants = new ArrayList<Restaurant>();
             for (int i = 0; i < restaurants.size(); i++) {
-                if (restaurants.get(i).getPrice() <= chosenPrice) {
+                if (restaurants.get(i).getPrice() <= chosenPrice && restaurants.get(i).getPrice() != 0) {
                     newRestaurants.add(restaurants.get(i));
                 }
             }
-            Intent intent = new Intent(this, InformationActivity.class);
-            intent.putExtra("restaurant", restaurants.get(rand.nextInt(newRestaurants.size())));
-            intent.putExtra("lat", getLatitude());
-            intent.putExtra("lng", getLongitude());
-            startActivity(intent);
+            if(newRestaurants.size() > 0) {
+                Intent intent = new Intent(this, InformationActivity.class);
+                intent.putExtra("restaurant", newRestaurants.get(rand.nextInt(newRestaurants.size())));
+                intent.putExtra("lat", getLatitude());
+                intent.putExtra("lng", getLongitude());
+                startActivity(intent);
+            }else {
+                errorAlert("SÖK PÅ FLER PRISKLASSER");
+            }
         } else {
-            Intent intent = new Intent(this, ResultActivity.class);
-            intent.putExtra("arrayList", restaurants);
-            intent.putExtra("price", chosenPrice);
-            intent.putExtra("lat", getLatitude());
-            intent.putExtra("lng", getLongitude());
-            startActivity(intent);
+            for (int i = 0; i < restaurants.size(); i++) {
+                if (restaurants.get(i).getPrice() <= chosenPrice && restaurants.get(i).getPrice() != 0) {
+                    newRestaurants.add(restaurants.get(i));
+                }
+            }
+            if(newRestaurants.size() > 0) {
+                Intent intent = new Intent(this, ResultActivity.class);
+                intent.putExtra("arrayList", newRestaurants);
+                intent.putExtra("lat", getLatitude());
+                intent.putExtra("lng", getLongitude());
+                startActivity(intent);
+            }else {
+                errorAlert("SÖK PÅ FLER PRISKLASSER");
+            }
         }
     }
-    }
-
-
-
+}

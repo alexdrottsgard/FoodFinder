@@ -34,8 +34,7 @@ public class ResultActivity extends AppCompatActivity {
      */
     private ViewPager mViewPager;
 
-    private ArrayList<Restaurant> tempRestaurants;
-    private ArrayList<Restaurant> restaurants = new ArrayList<Restaurant>();
+    private ArrayList<Restaurant> restaurants;
     private ResultListView list;
     private ResultMapView map;
     private int price;
@@ -47,19 +46,11 @@ public class ResultActivity extends AppCompatActivity {
         setContentView(R.layout.activity_result);
 
         Intent intent = getIntent();
-        tempRestaurants = (ArrayList<Restaurant>) intent.getSerializableExtra("arrayList");
-        System.out.println("ANTAL RESTAURANGER!!!!::::::::" + tempRestaurants.size());
-        price = (int) intent.getIntExtra("price",0);
+        restaurants = (ArrayList<Restaurant>) intent.getSerializableExtra("arrayList");
+        System.out.println("ANTAL RESTAURANGER!!!!::::::::" + restaurants.size());
         double lat = (double) intent.getDoubleExtra("lat",0);
         double lng = (double) intent.getDoubleExtra("lng", 0);
         userPosition = new LatLng(lat,lng);
-
-        for(int i = 0; i < tempRestaurants.size(); i++) {
-            if(tempRestaurants.get(i).getPrice() <= price && tempRestaurants.get(i).getPrice() != 0) {
-                restaurants.add(tempRestaurants.get(i));
-            }
-        }
-        System.out.println("ANTAL RESTAURANGER EFTER BORTTAGNING!!!!::::::::" + restaurants.size());
 
         list = new ResultListView();
         list.setArguments(restaurants, this);

@@ -38,24 +38,26 @@ public class SearchController extends AsyncTask<String, Void, Void> {
     private static final String CLIENT_ID = "QTBTJY4EUWO0TROZGBRZ4I1YZN51DCG4UMM11IBUCWFLHVXF";
     private static final String CLIENT_SECRET = "EX42ZK4A210FHPKT5SK1VXHJCDNAEOXYZUVECOEU1PFNIBEB";
     private ArrayList<Restaurant> restaurants = new ArrayList<Restaurant>();
+    private ArrayList<Restaurant> tempRestaurants = new ArrayList<Restaurant>();
+    private ArrayList<Integer> selectedPrices;
     private ProgressDialog progressDialog;
     private static int error = 0;
 
     /**
      *
      * @param distance Avståndet användaren valt för sin sökning
-     * @param price Prisklassen användaren har valt
+     * @param price Användarens val av prisklass
      * @param ma Instans av MainActivity
      * @param latitude Användarens latitude
      * @param longitude Användarens longitude
      */
     public SearchController(int distance, int price, MainActivity ma, double latitude, double longitude) {
-        this.distance=distance;
-        this.price=price;
+        this.distance = distance;
+        this.price = price;
         this.latitude = latitude;
         this.longitude = longitude;
         mainActivity = ma;
-        System.out.println("distance: "+distance + " Pris: " + price + " Lat: "+ latitude + " Lon: " + longitude);
+        //System.out.println("distance: "+distance + " Pris: " + price + " Lat: "+ latitude + " Lon: " + longitude);
         getData();
     }
 
@@ -251,13 +253,6 @@ public class SearchController extends AsyncTask<String, Void, Void> {
 
                 JSONObject contact = (JSONObject) venue.getJSONObject("contact");
 
-                if(venue.has("price")) {
-                    JSONObject price = (JSONObject) venue.getJSONObject("price");
-                    restaurant.setPrice(price.getInt("tier"));
-                }else {
-                    restaurant.setPrice(0);
-                }
-
                 if (contact.has("phone")) {
                     restaurant.setPhone(contact.getString("phone"));
                     System.out.println("TELEFONNUMMER: " + restaurant.getPhone());
@@ -287,6 +282,17 @@ public class SearchController extends AsyncTask<String, Void, Void> {
                     restaurant.setOpen("");
                 }
 
+                if(venue.has("price")) {
+                    JSONObject price = (JSONObject) venue.getJSONObject("price");
+                    if(price.getInt("tier") <= SearchController.this.price) {
+                        restaurant.setPrice(price.getInt("tier"));
+                    }else {
+                        restaurant.setPrice(0);
+                    }
+                }else {
+                    restaurant.setPrice(0);
+                }
+
                 if(index == restaurants.size()-1) {
                     mainActivity.openActivity(restaurants);
                     mainActivity.getSearchButton().setEnabled(true);
@@ -295,13 +301,13 @@ public class SearchController extends AsyncTask<String, Void, Void> {
 
             } catch (IOException e) {
                 System.out.println("HeJ, Funkar ej");
-                mainActivity.errorAlert("Något gick fel");
+                //mainActivity.errorAlert("Något gick fel");
             } catch (JSONException e) {
                 e.printStackTrace();
                 System.out.println("HeJ, Funkar ej JSON");
-                mainActivity.errorAlert("Något gick fel");
+                //mainActivity.errorAlert("Något gick fel");
             } catch (Exception e) {
-                mainActivity.errorAlert("Något gick fel");
+                //mainActivity.errorAlert("Något gick fel");
             }
         }
     }

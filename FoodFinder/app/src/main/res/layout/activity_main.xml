@@ -14,33 +14,20 @@
         android:id="@+id/textView"
         android:layout_width="0dp"
         android:layout_height="116dp"
-        android:layout_marginBottom="40dp"
         android:accessibilityLiveRegion="polite"
         android:fontFamily="cursive"
         android:text="FoodFinder"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="65sp"
-        app:layout_constraintBottom_toTopOf="@+id/priceSpinner"
         app:layout_constraintHorizontal_bias="0.508"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginRight="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp" />
-
-    <Spinner
-        android:id="@+id/priceSpinner"
-        android:layout_width="190dp"
-        android:layout_height="45dp"
-        android:background="@drawable/rounded_activity"
-        android:scrollIndicators="bottom"
-        android:textAlignment="center"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/categoryButton" />
+        android:layout_marginEnd="16dp"
+        tools:layout_editor_absoluteY="48dp" />
 
     <EditText
         android:id="@+id/distance"
@@ -94,16 +81,29 @@
     <Button
         android:id="@+id/categoryButton"
         android:layout_width="190dp"
-        android:layout_height="48dp"
+        android:layout_height="45dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
         android:background="@drawable/rounded_activity"
         android:text="Välj katergori"
-        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/distance"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp" />
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <Button
+        android:id="@+id/priceBtn"
+        android:layout_width="190dp"
+        android:layout_height="45dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/rounded_activity"
+        android:text="Välj max prisklass"
+        app:layout_constraintBottom_toTopOf="@+id/categoryButton"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

@@ -86,6 +86,7 @@ public class ResultListView extends Fragment implements Comparator<Restaurant> {
 
             restaurantName.setText(restaurants.get(position).getName());
             distance.setText(restaurants.get(position).getDistance() + " meter");
+            distance.setText("Prisklass: " + restaurants.get(position).getPrice());
             String ratingString = (restaurants.get(position).getRating() == 0.0) ? "?" : ""+restaurants.get(position).getRating();
             rating.setText(String.valueOf(ratingString + "/10"));
 
