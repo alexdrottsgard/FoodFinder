@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.util.SparseBooleanArray;
 import android.view.View;
 import android.widget.*;
 
@@ -34,6 +33,8 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     private Button searchButton, randomButton;
     private EditText distanceField;
     private static final String[] priceClass = {"Välj prisklass", "Luffare", "Arbetarklass", "Medelklass", "Överklass"};
+    final CharSequence[] categories = {"Asiatiskt", "Hamburgare", "Husmanskost", "Italienskt"};
+    final ArrayList seletedCategories = new ArrayList();
     private LocationManager locationManager;
     private LocationListener locationListener;
     private boolean random = false;
@@ -99,15 +100,6 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         adapter.setDropDownViewResource(android.R.layout.select_dialog_multichoice);
         priceSpinner.setAdapter(adapter);
         priceSpinner.setOnItemSelectedListener(this);
-    }
-
-    private class CategoryBtnListener implements View.OnClickListener {
-
-        @Override
-        public void onClick(View v) {
-            Intent intent = new Intent(MainActivity.this, CategoryActivity.class);
-            startActivity(intent);
-        }
     }
 
     @Override
@@ -177,6 +169,42 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
      * @param parent
      */
     public void onNothingSelected(AdapterView<?> parent) {
+    }
+
+    private class CategoryBtnListener implements View.OnClickListener {
+
+        AlertDialog.Builder ab = new AlertDialog.Builder(MainActivity.this)
+                .setTitle("Välj kategori")
+                .setMultiChoiceItems(categories, null, new DialogInterface.OnMultiChoiceClickListener() {
+
+                    public void onClick(DialogInterface dialog, int indexSelected, boolean isChecked) {
+                        if (isChecked) {
+                            // If the user checked the item, add it to the selected items
+                            seletedCategories.add(indexSelected);
+                        } else if (seletedCategories.contains(indexSelected)) {
+                            // Else, if the item is already in the array, remove it
+                            seletedCategories.remove(Integer.valueOf(indexSelected));
+                        }
+                    }
+                }).setPositiveButton("Välj", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        //  Your code when user clicked on OK
+                        //  You can write the code  to save the selected item here
+                    }
+                }).setNegativeButton("Stäng", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        //  Your code when user clicked on Cancel
+                    }
+                });
+
+        AlertDialog categoryAlert = ab.create();
+
+        @Override
+        public void onClick(View v) {
+            categoryAlert.show();
+        }
     }
 
     private class SearchButtonListener implements View.OnClickListener {
@@ -278,9 +306,8 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
             intent.putExtra("lng", getLongitude());
             startActivity(intent);
         }
-
+    }
     }
 
 
-        }
 
