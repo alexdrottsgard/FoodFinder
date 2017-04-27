@@ -37,6 +37,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     private LocationManager locationManager;
     private LocationListener locationListener;
     private boolean random = false;
+    private String selectedCategories;
 
     /**
      * Metoden startar klassen
@@ -95,10 +96,9 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         configureButton();
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_item, priceClass);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(android.R.layout.select_dialog_multichoice);
         priceSpinner.setAdapter(adapter);
         priceSpinner.setOnItemSelectedListener(this);
-
     }
 
     private class CategoryBtnListener implements View.OnClickListener {

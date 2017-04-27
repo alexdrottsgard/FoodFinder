@@ -29,7 +29,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/openHoursField"
+            android:id="@+id/open"
             android:layout_width="76dp"
             android:layout_height="40dp"
             android:layout_marginLeft="8dp"
@@ -99,43 +99,26 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-    </android.support.constraint.ConstraintLayout>
-
-    <android.support.constraint.ConstraintLayout
-        android:layout_width="0dp"
-        android:layout_height="70dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
-
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="220dp"
-            android:layout_height="50dp"
-            android:layout_marginBottom="6dp"
-            android:background="@drawable/rounded_information"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
 
         <Button
             android:id="@+id/btn_get_here"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="27dp"
             android:layout_marginEnd="150dp"
             android:layout_marginRight="150dp"
             android:background="@drawable/icon_navigation"
             android:textColor="#FFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintHorizontal_bias="0.428" />
 
         <Button
             android:id="@+id/btn_call"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="27dp"
             android:layout_marginEnd="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
@@ -151,11 +134,30 @@
             android:id="@+id/btn_website"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="27dp"
             android:layout_marginLeft="150dp"
             android:layout_marginStart="150dp"
             android:background="@drawable/icon_globe"
             android:textColor="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintHorizontal_bias="0.513" />
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="220dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="6dp"
+            android:background="@drawable/rounded_information"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent" />

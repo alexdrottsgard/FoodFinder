@@ -17,8 +17,7 @@ public class CategoryActivity extends Activity {
     Button getChoice;
 
     String[] categorylistContent = { "Asiatiskt", "Café", "Hamburgare"};
-
-
+    String[] categoryId = {"ad3fdh4a","fhewuhwe22233nf", "ahad223h3h2"};
 
     /** Called when the activity is first created. */
 
@@ -34,8 +33,6 @@ public class CategoryActivity extends Activity {
 
         getChoice = (Button)findViewById(R.id.getchoice);
 
-
-
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, categorylistContent);
         CategoryList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         CategoryList.setAdapter(adapter);
@@ -49,18 +46,21 @@ public class CategoryActivity extends Activity {
 
                 for(int i = 0; i < cntChoice; i++){
                     if(sparseBooleanArray.get(i)) {
-                        selected += CategoryList.getItemAtPosition(i).toString() + "\n";
+                        //selected += CategoryList.getItemAtPosition(i).toString() + "\n";
+                        if(i == cntChoice-1 && cntChoice > 1){
+                            selected += categoryId[i];
+                        }else {
+                            selected += categoryId[i] + ",";
+                        }
 
                     }
 
                 }
+                System.out.println(selected);
 
                 Toast.makeText(CategoryActivity.this, selected, Toast.LENGTH_LONG).show();
 
             }});
-
-
-
     }
 
 }

@@ -85,10 +85,6 @@ public class Restaurant implements Serializable {
         this.category = category;
     }
 
-    public void setHours(String hours) {
-        this.hours = hours;
-    }
-
     public void setOpen(String str) {
         open = str;
     }
@@ -115,10 +111,6 @@ public class Restaurant implements Serializable {
 
     public String getCategory() {
         return category;
-    }
-
-    public String getHours() {
-        return hours;
     }
 
     public String getName() {

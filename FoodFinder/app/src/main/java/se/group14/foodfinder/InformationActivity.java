@@ -7,6 +7,7 @@ import android.Manifest;
 import android.app.*;
 import android.content.*;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.*;
@@ -39,10 +40,14 @@ public class InformationActivity extends Activity implements OnMapReadyCallback{
 
         txtOpen = (TextView) findViewById(R.id.open);
         txtOpen.setText(restaurant.getOpen());
+        if(restaurant.getOpen().equals("Öppet")) {
+            txtOpen.setTextColor(Color.GREEN);
+        }else {
+            txtOpen.setTextColor(Color.RED);
+        }
 
         txtAddress = (TextView) findViewById(R.id.adressField);
 
-        StringBuilder stringBuilder = new StringBuilder();
         String str = restaurant.getAddress();
         str = str.replaceAll("\"", "");
         str = str.replace("]", "");
@@ -66,9 +71,7 @@ public class InformationActivity extends Activity implements OnMapReadyCallback{
             mapView.onResume();
             mapView.getMapAsync(this);
         }
-
     }
-
 
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;

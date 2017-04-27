@@ -278,9 +278,9 @@ public class SearchController extends AsyncTask<String, Void, Void> {
                     boolean open = hours.getBoolean("isOpen");
                     System.out.println("ÖPPET OR NAH???? :::::::::" + open);
                     if(open) {
-                        restaurant.setOpen("Öppet just nu");
+                        restaurant.setOpen("Öppet");
                     }else {
-                        restaurant.setOpen("Stängt just nu");
+                        restaurant.setOpen("Stängt");
                     }
 
                 }else {
