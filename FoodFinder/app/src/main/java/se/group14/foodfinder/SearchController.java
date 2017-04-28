@@ -284,19 +284,17 @@ public class SearchController extends AsyncTask<String, Void, Void> {
 
                 if(venue.has("price")) {
                     JSONObject price = (JSONObject) venue.getJSONObject("price");
-                    if(price.getInt("tier") <= SearchController.this.price) {
-                        restaurant.setPrice(price.getInt("tier"));
-                    }else {
-                        restaurant.setPrice(0);
-                    }
+                    restaurant.setPrice(price.getInt("tier"));
                 }else {
                     restaurant.setPrice(0);
                 }
 
                 if(index == restaurants.size()-1) {
-                    mainActivity.openActivity(restaurants);
+                    System.out.println("RESTAURANGER INNAN FILTRERING::::::" + restaurants.size());
+                    mainActivity.openActivity(filterRestaurants(restaurants));
                     mainActivity.getSearchButton().setEnabled(true);
                     progressDialog.dismiss();
+                    //filterRestaurants(restaurants);
                 }
 
             } catch (IOException e) {
@@ -312,4 +310,19 @@ public class SearchController extends AsyncTask<String, Void, Void> {
         }
     }
 
+    /**
+     * Metoden filtrerar bort restauranger vars prisklass är högre än
+     * användarens val av prisklass och restauranger var prisklass = 0
+     * @param restaurants Arraylisten av restauranger som ska filtreras
+     * @return den nya filtrerade restaurangen
+     */
+    public ArrayList<Restaurant> filterRestaurants(ArrayList<Restaurant> restaurants) {
+        ArrayList<Restaurant> res = new ArrayList<Restaurant>();
+        for(int i = 0; i < restaurants.size(); i++) {
+            if(restaurants.get(i).getPrice() <= price && restaurants.get(i).getPrice() != 0) {
+                res.add(restaurants.get(i));
+            }
+        }
+        return res;
+    }
 }

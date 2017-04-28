@@ -25,7 +25,7 @@ import java.util.Random;
  * Applikationen startar i den här klassen. GUI för startsida där användare kan göra en sökning filtrerat
  * på prisklass och avstånd. (Prisklass ej implementerat ännu)
  */
-public class MainActivity extends Activity implements AdapterView.OnItemSelectedListener {
+public class MainActivity extends Activity {
     private int chosenPrice = 4, chosenDistance = 1000;
     private double longitude, latitude;
     private Button searchButton, randomButton,categoryButton, priceButton;;
@@ -100,11 +100,6 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         };
 
         configureButton();
-
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_item, priceClass);
-//        adapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
-//        priceSpinner.setAdapter(adapter);
-//        priceSpinner.setOnItemSelectedListener(this);
     }
 
     @Override
@@ -133,47 +128,6 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
 
         //uppdaterar koordinater, görs även var femte sekund.
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 0, locationListener);
-    }
-
-    /**
-     * Metoden ska hantera användares val av prisklass från spinnern och lagra valet i en instansvariabel
-     *
-     * @param parent
-     * @param view
-     * @param position position/index för spinnern
-     * @param id       id för spinnern
-     */
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        switch (position) {
-            case 0:
-                chosenPrice = 4;
-                break;
-            case 1:
-                chosenPrice = position;
-                System.out.println(chosenPrice);
-                break;
-            case 2:
-                chosenPrice = position;
-                System.out.println(chosenPrice);
-                break;
-            case 3:
-                chosenPrice = position;
-                System.out.println(chosenPrice);
-                break;
-            case 4:
-                chosenPrice = position;
-                System.out.println(chosenPrice);
-                break;
-        }
-    }
-
-    /**
-     * Metoden måste finnas med för klassen implementerar Adapterview
-     * men vi har ingen användning för den
-     *
-     * @param parent
-     */
-    public void onNothingSelected(AdapterView<?> parent) {
     }
 
     private class CategoryBtnListener implements View.OnClickListener {
@@ -329,33 +283,27 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
      * @param restaurants
      */
     public void openActivity(ArrayList<Restaurant> restaurants) {
-        ArrayList<Restaurant> newRestaurants = new ArrayList<Restaurant>();
-        if (random) {
+        System.out.println("RESTAURANGER EFTER FILTRERING::::::" + restaurants.size());
+
+        if(random) {
             System.out.println("RANDOM");
             Random rand = new Random();
-            for (int i = 0; i < restaurants.size(); i++) {
-                if (restaurants.get(i).getPrice() <= chosenPrice && restaurants.get(i).getPrice() != 0) {
-                    newRestaurants.add(restaurants.get(i));
-                }
-            }
-            if(newRestaurants.size() > 0) {
+
+            if(restaurants.size() > 0) {
                 Intent intent = new Intent(this, InformationActivity.class);
-                intent.putExtra("restaurant", newRestaurants.get(rand.nextInt(newRestaurants.size())));
+                intent.putExtra("restaurant", restaurants.get(rand.nextInt(restaurants.size())));
                 intent.putExtra("lat", getLatitude());
                 intent.putExtra("lng", getLongitude());
                 startActivity(intent);
             }else {
                 errorAlert("SÖK PÅ FLER PRISKLASSER");
             }
-        } else {
-            for (int i = 0; i < restaurants.size(); i++) {
-                if (restaurants.get(i).getPrice() <= chosenPrice && restaurants.get(i).getPrice() != 0) {
-                    newRestaurants.add(restaurants.get(i));
-                }
-            }
-            if(newRestaurants.size() > 0) {
+
+        }else {
+
+            if(restaurants.size() > 0) {
                 Intent intent = new Intent(this, ResultActivity.class);
-                intent.putExtra("arrayList", newRestaurants);
+                intent.putExtra("arrayList", restaurants);
                 intent.putExtra("lat", getLatitude());
                 intent.putExtra("lng", getLongitude());
                 startActivity(intent);
