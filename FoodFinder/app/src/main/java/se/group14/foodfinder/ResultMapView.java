@@ -81,7 +81,8 @@ public class ResultMapView extends Fragment implements OnMapReadyCallback, Googl
         }catch (SecurityException se) {
 
         }
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userPosition, 15));
+        //mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userPosition, 15));
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(55.609069,12.994678), 15));
         mGoogleMap.setOnInfoWindowClickListener(this);
         addMarkers();
     }
