@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * @author Filip Heidfors, Alexander J. Drottsgård
+ * @author Filip Heidfors, Alexander J. Drottsgård, John Eklöf, Elias Moltedo
  * Applikationen startar i den här klassen. GUI för startsida där användare kan göra en sökning filtrerat
  * på prisklass och avstånd. (Prisklass ej implementerat ännu)
  */
@@ -127,7 +127,7 @@ public class MainActivity extends Activity {
         }
 
         //uppdaterar koordinater, görs även var femte sekund.
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 0, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, locationListener);
     }
 
     private class CategoryBtnListener implements View.OnClickListener {
@@ -168,6 +168,9 @@ public class MainActivity extends Activity {
         }
     }
 
+    /**
+     * Skapar en alertdialog med checkboxar och säger hur den ska hantera klick på de olika raderna
+     */
     public void setUpPriceAlert() {
         AlertDialog.Builder ab = new AlertDialog.Builder(MainActivity.this)
                 .setTitle("Välj maximal prisklass")
@@ -197,6 +200,9 @@ public class MainActivity extends Activity {
         priceAlert = ab.create();
     }
 
+    /**
+     * Lyssnare för prisklass knappen
+     */
     private class PriceButtonListener implements View.OnClickListener {
 
         public void onClick(View v) {
@@ -205,6 +211,9 @@ public class MainActivity extends Activity {
         }
     }
 
+    /**
+     * Lyssnare för sökknappen
+     */
     private class SearchButtonListener implements View.OnClickListener {
         /**
          * Metoden hanterar klick på sökknappen och startar SearchController
@@ -222,6 +231,9 @@ public class MainActivity extends Activity {
         }
     }
 
+    /**
+     * Lyssnare för slumpaknappen
+     */
     private class RandomButtonListener implements View.OnClickListener {
         /**
          * Metoden hanterar klick på slumpknappen och startar SearchController
@@ -239,6 +251,10 @@ public class MainActivity extends Activity {
         }
     }
 
+    /**
+     * Metoden ska visa en alertdialog med ett felmeddelande
+     * @param str Meddelandet som ska visas
+     */
     public void errorAlert(String str) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);

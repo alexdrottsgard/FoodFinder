@@ -167,7 +167,10 @@ public class SearchController extends AsyncTask<String, Void, Void> {
         return null;
     }
 
-    @Override
+    /**
+     * Metoden körs före doInBackground exekverats. Börjar visa en progressdialog för att visa
+     * att visa för användaren att systemet arbetar
+     */
     protected void onPreExecute() {
         super.onPreExecute();
 
@@ -294,25 +297,30 @@ public class SearchController extends AsyncTask<String, Void, Void> {
                     mainActivity.openActivity(filterRestaurants(restaurants));
                     mainActivity.getSearchButton().setEnabled(true);
                     progressDialog.dismiss();
-                    //filterRestaurants(restaurants);
                 }
 
             } catch (IOException e) {
                 System.out.println("HeJ, Funkar ej");
-                //mainActivity.errorAlert("Något gick fel");
+                getMainActivity().getSearchButton().setEnabled(true);
+                progressDialog.dismiss();
+                getMainActivity().errorAlert("Något gick fel");
             } catch (JSONException e) {
                 e.printStackTrace();
                 System.out.println("HeJ, Funkar ej JSON");
-                //mainActivity.errorAlert("Något gick fel");
+                getMainActivity().getSearchButton().setEnabled(true);
+                progressDialog.dismiss();
+                getMainActivity().errorAlert("Något gick fel");
             } catch (Exception e) {
-                //mainActivity.errorAlert("Något gick fel");
+                getMainActivity().errorAlert("Något gick fel");
+                getMainActivity().getSearchButton().setEnabled(true);
+                progressDialog.dismiss();
             }
         }
     }
 
     /**
      * Metoden filtrerar bort restauranger vars prisklass är högre än
-     * användarens val av prisklass och restauranger var prisklass = 0
+     * användarens val av prisklass och restauranger vars prisklass = 0
      * @param restaurants Arraylisten av restauranger som ska filtreras
      * @return den nya filtrerade restaurangen
      */
@@ -324,5 +332,9 @@ public class SearchController extends AsyncTask<String, Void, Void> {
             }
         }
         return res;
+    }
+
+    public MainActivity getMainActivity() {
+        return mainActivity;
     }
 }

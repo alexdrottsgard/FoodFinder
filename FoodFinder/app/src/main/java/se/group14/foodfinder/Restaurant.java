@@ -7,6 +7,8 @@ import java.io.Serializable;
 
 /**
  * Created by filipheidfors on 2017-03-31.
+ * Klassen representerar en restaurang
+ * @author Filip Heidfors, Alexander J. Drottsgård
  */
 
 public class Restaurant implements Serializable {

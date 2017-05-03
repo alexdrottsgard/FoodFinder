@@ -24,6 +24,8 @@ import java.util.HashMap;
 
 /**
  * Created by filipheidfors on 2017-04-17.
+ * @author Filip Heidfors,
+ * Klassen hanterar visning av restauranger på google maps, samt användarens position.
  */
 
 public class ResultMapView extends Fragment implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener{
@@ -35,13 +37,24 @@ public class ResultMapView extends Fragment implements OnMapReadyCallback, Googl
     private HashMap<Marker, Restaurant> hashMap = new HashMap<Marker, Restaurant>();
     private LatLng userPosition;
 
+    /**
+     * Metoden körs när vyn skapas
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return vyn
+     */
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.result_map_view, container, false);
         return view;
     }
 
-    @Override
+    /**
+     * Metoden körs när vyn ÄR skapad och ska då instansiera mapView
+     * @param view
+     * @param savedInstanceState
+     */
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mapView = (MapView) view.findViewById(R.id.mapView);
@@ -53,7 +66,10 @@ public class ResultMapView extends Fragment implements OnMapReadyCallback, Googl
         }
     }
 
-    @Override
+    /**
+     * Metoden körs när google maps är redo att visas
+     * @param googleMap
+     */
     public void onMapReady(GoogleMap googleMap) {
         MapsInitializer.initialize(getContext());
 
@@ -70,12 +86,22 @@ public class ResultMapView extends Fragment implements OnMapReadyCallback, Googl
         addMarkers();
     }
 
+    /**
+     * Metoden används för att skicka data till den här klassen
+     * @param restaurants En arraylist med restaurangobjekt som ska visas på kartan
+     * @param latlng Användarens position
+     * @param a En activity (ResultActivity)
+     */
     public void setArguments(ArrayList<Restaurant> restaurants, LatLng latlng, Activity a) {
         this.restaurants = restaurants;
         userPosition = latlng;
         activity = a;
     }
 
+    /**
+     * Metoden ska lägga till markers/pins på kartan och
+     * varje marker ska vara nyckel till ett restaurangobjekt
+     */
     public void addMarkers() {
         Marker marker;
         MarkerOptions markerOptions;
@@ -86,13 +112,17 @@ public class ResultMapView extends Fragment implements OnMapReadyCallback, Googl
             markerOptions = new MarkerOptions(); //.position(latlng).title(restaurants.get(i).getName()).snippet(restaurants.get(i).getDistance() + " meter");
             markerOptions.position(latlng);
             markerOptions.title(restaurants.get(i).getName());
-            markerOptions.snippet(restaurants.get(i).getDistance() + " meter       " + restaurants.get(i).getRating() + "/10");
+            markerOptions.snippet("Avstånd: " +restaurants.get(i).getDistance() + " meter Betyg: " + restaurants.get(i).getRating() + "/10");
             marker = mGoogleMap.addMarker(markerOptions);
             hashMap.put(marker,restaurants.get(i));
         }
     }
 
-    @Override
+    /**
+     * Metoden hanterar klick på en marker. Ska öppna en ny activity (InformationActivity) som visar
+     * info om vald restaurang
+     * @param marker Markern användaren klickade på
+     */
     public void onInfoWindowClick(Marker marker) {
         System.out.println("RESTAURANG MAN KLICKADE PÅ " + hashMap.get(marker).getName());
         Intent intent = new Intent(activity, InformationActivity.class);

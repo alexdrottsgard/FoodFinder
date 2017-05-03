@@ -19,6 +19,8 @@ import java.util.Comparator;
 
 /**
  * Created by filipheidfors on 2017-04-17.
+ * @author Filip Heidfors, Alexander J. Drottsgård
+ * Klassen hanterar visning av restauranger i en lista
  */
 
 public class ResultListView extends Fragment implements Comparator<Restaurant> {
@@ -35,16 +37,29 @@ public class ResultListView extends Fragment implements Comparator<Restaurant> {
         return rootView;
     }
 
+    /**
+     * Metoden används för att kunna skicka data till klassen
+     * @param restaurants en ArrayList med restaurangobjekt
+     * @param a Activity (ResultActivity)
+     */
     public void setArguments(ArrayList<Restaurant> restaurants, Activity a) {
         this.restaurants = restaurants;
         activity = a;
     }
 
-    public int compare(Restaurant o1, Restaurant o2) {
-        return (int) (o2.getRating()*10) - (int) (o1.getRating()*10);
+    /**
+     * Metoden sorterar ArrayListen med restaurangobjekt på betyg descending
+     * @param r1 Restaurang 1
+     * @param r2 Restaurang 2
+     * @return positivt eller negativt heltal
+     */
+    public int compare(Restaurant r1, Restaurant r2) {
+        return (int) (r2.getRating()*10) - (int) (r1.getRating()*10);
     }
 
-    //Metod som ska sköta insättningen av data till ListViewn
+    /**
+     * Metod som ska sköta insättningen av data till ListViewn
+     */
     public void showInfo() {
         RestaurantListAdapter adapter = new RestaurantListAdapter(activity.getApplicationContext());
         resultView.setAdapter(adapter);
@@ -86,7 +101,7 @@ public class ResultListView extends Fragment implements Comparator<Restaurant> {
 
             restaurantName.setText(restaurants.get(position).getName());
             distance.setText(restaurants.get(position).getDistance() + " meter");
-            distance.setText("Prisklass: " + restaurants.get(position).getPrice());
+            //distance.setText(restaurants.get(position).getDistance() + "");
             String ratingString = (restaurants.get(position).getRating() == 0.0) ? "?" : ""+restaurants.get(position).getRating();
             rating.setText(String.valueOf(ratingString + "/10"));
 

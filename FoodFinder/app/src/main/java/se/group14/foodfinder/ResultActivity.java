@@ -17,6 +17,12 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 
+/**
+ * @author Filip Heidfors, Elias Moltedo
+ * Klassen hanterar två fragments som användaren kan bläddra mellan.
+ * En lista av restauranger (ResultListView) och en karta på restauranger (ResultMapView)
+ *
+ */
 public class ResultActivity extends AppCompatActivity {
 
     /**
@@ -37,7 +43,6 @@ public class ResultActivity extends AppCompatActivity {
     private ArrayList<Restaurant> restaurants;
     private ResultListView list;
     private ResultMapView map;
-    private int price;
     private LatLng userPosition;
 
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,6 +1,7 @@
 package se.group14.foodfinder;
 /**
  * Created by Alexander J. Drottsgård on 2017-03-31.
+ * @author Filip Heidfors, John Eklöf,
  */
 
 import android.Manifest;
@@ -18,7 +19,10 @@ import android.widget.*;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
 
-
+/**
+ * Klassen är en activity där information om en restaurang finns så som
+ * namn, adress, betyg, telefonnummer, öppet/stängt, vägbeskrivning och hemsida
+ */
 public class InformationActivity extends Activity implements OnMapReadyCallback{
     private Restaurant restaurant;
     private TextView txtName, txtAddress, txtRating, txtOpen;
@@ -34,6 +38,8 @@ public class InformationActivity extends Activity implements OnMapReadyCallback{
 
         Intent intent = getIntent();
         restaurant = (Restaurant) intent.getSerializableExtra("restaurant");
+
+        //Toast.makeText(getApplicationContext(),"Prisklass: " + restaurant.getPrice() + "Avstånd: " + restaurant.getDistance(),Toast.LENGTH_LONG).show();
 
         txtName = (TextView) findViewById(R.id.restaurantName);
         txtName.setText(restaurant.getName());
@@ -73,6 +79,10 @@ public class InformationActivity extends Activity implements OnMapReadyCallback{
         }
     }
 
+    /**
+     * Metod som körs när google maps är redo att visas
+     * @param googleMap GoogleMap
+     */
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
         mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
@@ -88,7 +98,8 @@ public class InformationActivity extends Activity implements OnMapReadyCallback{
     }
 
     /**
-     * Lyssnare för klick på ringknappen. Ska öppna telefonappen och ringa restaurang
+     * Lyssnare för klick på ringknappen. Ska öppna telefonappen med restaurangens
+     * telefonnummer inmatat
      */
     private class ButtonCallListener implements View.OnClickListener {
 
@@ -119,6 +130,10 @@ public class InformationActivity extends Activity implements OnMapReadyCallback{
         }
     }
 
+    /**
+     * Lyssnare för hemsidaknappen. Ska öppna hemsida till restaurangen
+     * i extern webbläsare
+     */
     private class ButtonWebsiteListener implements View.OnClickListener {
 
         @Override
@@ -144,6 +159,9 @@ public class InformationActivity extends Activity implements OnMapReadyCallback{
         }
     }
 
+    /**
+     * Lyssnare för vägbeskrivningsknapp. Ska öppna vägbeskrivning i extern kartapp
+     */
     private class ButtonGetHereListener implements View.OnClickListener {
 
         @Override
