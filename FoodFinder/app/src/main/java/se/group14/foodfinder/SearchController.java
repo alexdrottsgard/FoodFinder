@@ -23,6 +23,7 @@ import java.net.SocketTimeoutException;
 import java.net.URL;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by AlexanderJD on 2017-03-17.
@@ -42,6 +43,8 @@ public class SearchController extends AsyncTask<String, Void, Void> {
     private ArrayList<Integer> selectedPrices;
     private ProgressDialog progressDialog;
     private static int error = 0;
+    private String categories;
+    private HashMap<String,String> categoryMap = new HashMap<String, String>();
 
     /**
      *
@@ -51,22 +54,51 @@ public class SearchController extends AsyncTask<String, Void, Void> {
      * @param latitude Användarens latitude
      * @param longitude Användarens longitude
      */
-    public SearchController(int distance, int price, MainActivity ma, double latitude, double longitude) {
+    public SearchController(int distance, int price, MainActivity ma, double latitude, double longitude, ArrayList<String> selectedCategories) {
         this.distance = distance;
         this.price = price;
         this.latitude = latitude;
         this.longitude = longitude;
         mainActivity = ma;
+
+        categories = getCategoriesString(selectedCategories);
+        System.out.println(categories + " i searchcontroller");
+
         //System.out.println("distance: "+distance + " Pris: " + price + " Lat: "+ latitude + " Lon: " + longitude);
         getData();
+    }
+
+    public String getCategoriesString(ArrayList<String> selectedCategories) {
+        categoryMap.put("Asiatiskt", "asiatID");
+        categoryMap.put("Hamburgare", "burgarID");
+        categoryMap.put("Husmanskost", "HusmanID");
+        categoryMap.put("Italienskt", "SpaggeID");
+
+        StringBuilder categoryBuilder = new StringBuilder();
+        for(int i = 0; i < selectedCategories.size(); i ++) {
+            if(categoryMap.containsKey(selectedCategories.get(i))) {
+                categoryBuilder.append(selectedCategories.get(i) + ",");
+            }
+        }
+        if(categoryBuilder.length() > 0) {
+            categoryBuilder.deleteCharAt(categoryBuilder.length()-1);
+        }
+
+        return categoryBuilder.toString();
     }
 
     /**
      * Metoden exekverar metoden doInBackground för att nätverksanrop får inte göras på Main/UI tråden
      */
     public void getData() {
+
+        if(categories.length() > 0) {
+            execute(API+"55.609069,12.994678&categoryId=4d4b7105d754a06374d81259&limit=50&radius="+distance+"&intent=browse&client_id="+CLIENT_ID+"&client_secret="+CLIENT_SECRET+"&v=20170331");
+        }else {
+            execute(API+"55.609069,12.994678&limit=50&radius="+distance+"&intent=browse&client_id="+CLIENT_ID+"&client_secret="+CLIENT_SECRET+"&v=20170331");
+        }
         //execute(API+latitude+","+longitude+"&categoryId=4d4b7105d754a06374d81259&radius="+distance+"&intent=browse&client_id="+CLIENT_ID+"&client_secret="+CLIENT_SECRET+"&v=20170331");
-        execute(API+"55.609069,12.994678&categoryId=4d4b7105d754a06374d81259&limit=50&radius="+distance+"&intent=browse&client_id="+CLIENT_ID+"&client_secret="+CLIENT_SECRET+"&v=20170331");
+
     }
 
     /**

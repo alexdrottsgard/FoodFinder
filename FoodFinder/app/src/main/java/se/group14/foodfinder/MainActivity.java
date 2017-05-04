@@ -18,6 +18,7 @@ import android.widget.*;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 /**
@@ -31,16 +32,17 @@ public class MainActivity extends Activity {
     private Button searchButton, randomButton,categoryButton, priceButton;;
     private EditText distanceField;
     private static final String[] priceClass = {"$", "$$", "$$$", "$$$$"};
-    final CharSequence[] categories = {"Markera alla", "Avmarkera alla","Asiatiskt", "Hamburgare", "Husmanskost", "Italienskt",
+    private String[] categories = {"Markera alla", "Avmarkera alla","Asiatiskt", "Hamburgare", "Husmanskost", "Italienskt",
             "hduhdud", "hfuheueherw", "hfuh73h3432","hfuh4h43h5","fhuh3u43u2h55",
             "hfuh5uh235uh325"};
-    final ArrayList seletedCategories = new ArrayList();
-    //private ArrayList<Integer> selectedPrices = new ArrayList<Integer>();
+    private ArrayList<String> seletedCategories = new ArrayList<String>();
+    private HashMap<String,String> categoryMap = new HashMap<String, String>();
     private LocationManager locationManager;
     private LocationListener locationListener;
     private boolean random = false;
-    private String selectedCategories;
+    //private String selectedCategories;
     private AlertDialog priceAlert;
+    private StringBuilder categoryBuilder = new StringBuilder();
 
     /**
      * Metoden startar klassen
@@ -127,7 +129,7 @@ public class MainActivity extends Activity {
         }
 
         //uppdaterar koordinater, görs även var femte sekund.
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 0, locationListener);
     }
 
     private class CategoryBtnListener implements View.OnClickListener {
@@ -143,13 +145,25 @@ public class MainActivity extends Activity {
                                 ListView listView = ((AlertDialog) dialog).getListView();
                                 for(int i = 2; i < categories.length; i++) {
                                     listView.setItemChecked(i,true);
+                                    listView.setItemChecked(1,false);
+                                    seletedCategories.add(categories[i]);
                                 }
+                            }else if(indexSelected == 1) {
+                                ListView listView = ((AlertDialog) dialog).getListView();
+                                for(int i = 2; i < categories.length; i++) {
+                                    listView.setItemChecked(i,false);
+                                    listView.setItemChecked(0,false);
+                                }
+                                seletedCategories.clear();
+                            }else {
+                                seletedCategories.add(categories[indexSelected]);
                             }
 
-                            seletedCategories.add(indexSelected);
-                        } else if (seletedCategories.contains(indexSelected)) {
+                            System.out.println(seletedCategories.toString());
+                        } else if (seletedCategories.contains(categories[indexSelected])) {
                             // Else, if the item is already in the array, remove it
-                            seletedCategories.remove(Integer.valueOf(indexSelected));
+                            seletedCategories.remove(categories[indexSelected]);
+                            System.out.println(seletedCategories.toString());
                         }
                     }
                 }).setPositiveButton("Klar", new DialogInterface.OnClickListener() {
@@ -157,6 +171,7 @@ public class MainActivity extends Activity {
                     public void onClick(DialogInterface dialog, int id) {
                         //  Your code when user clicked on OK
                         //  You can write the code  to save the selected item here
+                        //System.out.println(seletedCategories.toString());
                     }
                 });
 
@@ -227,7 +242,7 @@ public class MainActivity extends Activity {
             } catch (Exception e) {
             }
             random = false;
-            new SearchController(chosenDistance, chosenPrice, MainActivity.this, getLatitude(), getLongitude());
+            new SearchController(chosenDistance, chosenPrice, MainActivity.this, getLatitude(), getLongitude(), seletedCategories);
         }
     }
 
@@ -247,7 +262,7 @@ public class MainActivity extends Activity {
             } catch (Exception e) {
             }
             random = true;
-            new SearchController(chosenDistance, chosenPrice, MainActivity.this, getLatitude(), getLongitude());
+            new SearchController(chosenDistance, chosenPrice, MainActivity.this, getLatitude(), getLongitude(), seletedCategories);
         }
     }
 
