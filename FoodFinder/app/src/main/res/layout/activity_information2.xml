@@ -54,7 +54,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="14dp"
             android:fontFamily="sans-serif-condensed"
-            android:text="TextView"
+            android:text="Västergatan 9a (Mäster Johansgatan 3), 211 21, Malmö, Sverige"
             android:textAlignment="textStart"
             android:textColor="#FFFFFF"
             android:textSize="18sp"
