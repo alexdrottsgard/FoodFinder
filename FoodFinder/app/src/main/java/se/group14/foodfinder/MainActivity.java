@@ -29,7 +29,8 @@ import java.util.Random;
 public class MainActivity extends Activity {
     private int chosenPrice = 4, chosenDistance = 1000;
     private double longitude, latitude;
-    private Button searchButton, randomButton,categoryButton, priceButton;;
+    private Button searchButton, randomButton,categoryButton, priceButton;
+    private ImageView logo;
     private EditText distanceField;
     private static final String[] priceClass = {"$  (~0-100 kr)", "$$ (~100-200 kr)", "$$$ (~200-350 kr)", "$$$$ (~350+ kr)"};
     private String[] categories = {"Asiatiskt", "Grekiskt", "Franskt", "Hamburgare", "Indiskt", "Italienskt", "Kebab", "Mellanöstern", "Mexikanskt", "Pizza", "Sallad", "Skandinaviskt", "Vegetariskt/Veganskt"};
@@ -62,6 +63,9 @@ public class MainActivity extends Activity {
         randomButton = (Button) findViewById(R.id.randomButton);
         randomButton.setOnClickListener(new RandomButtonListener());
         distanceField = (EditText) findViewById(R.id.distance);
+
+
+
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
