@@ -58,7 +58,7 @@ public class InformationActivity extends Activity implements OnMapReadyCallback{
         str = str.replaceAll("\"", "");
         str = str.replace("]", "");
         str = str.replace("[", "");
-        //txtAddress.setText(str);
+        txtAddress.setText(str);
 
         txtRating = (TextView) findViewById(R.id.rating);
         txtRating.setText("" + restaurant.getRating());

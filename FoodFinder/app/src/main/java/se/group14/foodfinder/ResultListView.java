@@ -99,8 +99,10 @@ public class ResultListView extends Fragment implements Comparator<Restaurant> {
             TextView distance = (TextView) view.findViewById(R.id.distance);
             TextView rating = (TextView) view.findViewById(R.id.rating);
             TextView priceClass = (TextView) view.findViewById(R.id.priceClass);
+            TextView category = (TextView) view.findViewById(R.id.txtCategory);
 
             restaurantName.setText(restaurants.get(position).getName());
+            category.setText(restaurants.get(position).getCategory());
             distance.setText(restaurants.get(position).getDistance() + " meter");
             priceClass.setText("Prisklass " + restaurants.get(position).getPrice());
             //distance.setText(restaurants.get(position).getDistance() + "");

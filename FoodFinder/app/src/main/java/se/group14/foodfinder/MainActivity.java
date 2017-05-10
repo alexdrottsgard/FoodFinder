@@ -31,10 +31,8 @@ public class MainActivity extends Activity {
     private double longitude, latitude;
     private Button searchButton, randomButton,categoryButton, priceButton;;
     private EditText distanceField;
-    private static final String[] priceClass = {"$", "$$", "$$$", "$$$$"};
-    private String[] categories = {"Markera alla", "Avmarkera alla","Asiatiskt", "Hamburgare", "Husmanskost", "Italienskt",
-            "hduhdud", "hfuheueherw", "hfuh73h3432","hfuh4h43h5","fhuh3u43u2h55",
-            "hfuh5uh235uh325"};
+    private static final String[] priceClass = {"$  (~0-100 kr)", "$$ (~100-200 kr)", "$$$ (~200-350 kr)", "$$$$ (~350+ kr)"};
+    private String[] categories = {"Asiatiskt", "Grekiskt", "Franskt", "Hamburgare", "Indiskt", "Italienskt", "Kebab", "Mellanöstern", "Mexikanskt", "Pizza", "Sallad", "Skandinaviskt", "Vegetariskt/Veganskt"};
     private ArrayList<String> seletedCategories = new ArrayList<String>();
     private HashMap<String,String> categoryMap = new HashMap<String, String>();
     private LocationManager locationManager;
@@ -135,36 +133,55 @@ public class MainActivity extends Activity {
     private class CategoryBtnListener implements View.OnClickListener {
 
         AlertDialog.Builder ab = new AlertDialog.Builder(MainActivity.this)
-                .setTitle("Välj kategori")
+                .setTitle("Välj kategori/er för att specificera din sökning")
                 .setMultiChoiceItems(categories, null, new DialogInterface.OnMultiChoiceClickListener() {
 
                     public void onClick(DialogInterface dialog, int indexSelected, boolean isChecked) {
+
                         if (isChecked) {
+                            seletedCategories.add(categories[indexSelected]);
                             // If the user checked the item, add it to the selected items
-                            if(indexSelected == 0){
-                                ListView listView = ((AlertDialog) dialog).getListView();
-                                for(int i = 2; i < categories.length; i++) {
-                                    listView.setItemChecked(i,true);
-                                    listView.setItemChecked(1,false);
-                                    seletedCategories.add(categories[i]);
-                                }
-                            }else if(indexSelected == 1) {
-                                ListView listView = ((AlertDialog) dialog).getListView();
-                                for(int i = 2; i < categories.length; i++) {
-                                    listView.setItemChecked(i,false);
-                                    listView.setItemChecked(0,false);
-                                }
-                                seletedCategories.clear();
-                            }else {
-                                seletedCategories.add(categories[indexSelected]);
-                            }
+//                            if (indexSelected == 0) {
+//                                ListView listView = ((AlertDialog) dialog).getListView();
+//                                for (int i = 1; i < categories.length; i++) {
+//                                    listView.setItemChecked(i, true);
+//                                    listView.setItemChecked(0, true);
+//                                    seletedCategories.add(categories[i]);
+//                                }
+//                            } else {
+//                                seletedCategories.add(categories[indexSelected]);
+//                            }
 
                             System.out.println(seletedCategories.toString());
-                        } else if (seletedCategories.contains(categories[indexSelected])) {
-                            // Else, if the item is already in the array, remove it
+                        }else {
+
                             seletedCategories.remove(categories[indexSelected]);
+//                            if(indexSelected == 0) {
+//                                ListView listView = ((AlertDialog) dialog).getListView();
+//                                for (int i = 1; i < categories.length; i++) {
+//                                    listView.setItemChecked(i, false);
+//                                    listView.setItemChecked(0, false);
+//                                }
+//                                seletedCategories.clear();
+//                            }else {
+//                                seletedCategories.remove(categories[indexSelected]);
+//                            }
                             System.out.println(seletedCategories.toString());
                         }
+
+
+
+//                        } else if (seletedCategories.contains(categories[indexSelected])) {
+//                            // Else, if the item is already in the array, remove it
+//                            if(indexSelected == 0) {
+//                                ListView listView = ((AlertDialog) dialog).getListView();
+//                                for (int i = 1; i < categories.length; i++) {
+//                                    listView.setItemChecked(i, false);
+//                                    listView.setItemChecked(0, false);
+//                                }
+//                                seletedCategories.clear();
+//                            }
+//                        }
                     }
                 }).setPositiveButton("Klar", new DialogInterface.OnClickListener() {
                     @Override
@@ -174,6 +191,8 @@ public class MainActivity extends Activity {
                         //System.out.println(seletedCategories.toString());
                     }
                 });
+
+
 
         AlertDialog categoryAlert = ab.create();
 

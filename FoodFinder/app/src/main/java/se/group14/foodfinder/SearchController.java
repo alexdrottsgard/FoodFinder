@@ -69,15 +69,24 @@ public class SearchController extends AsyncTask<String, Void, Void> {
     }
 
     public String getCategoriesString(ArrayList<String> selectedCategories) {
-        categoryMap.put("Asiatiskt", "asiatID");
-        categoryMap.put("Hamburgare", "burgarID");
-        categoryMap.put("Husmanskost", "HusmanID");
-        categoryMap.put("Italienskt", "SpaggeID");
+        categoryMap.put("Asiatiskt", "4bf58dd8d48988d142941735");
+        categoryMap.put("Hamburgare", "4bf58dd8d48988d16c941735");
+        categoryMap.put("Vegetarisk/Vegansk", "4bf58dd8d48988d1d3941735");
+        categoryMap.put("Italienskt", "4bf58dd8d48988d110941735");
+        categoryMap.put("Indiskt", "4bf58dd8d48988d10f941735");
+        categoryMap.put("Mexikanskt", "4bf58dd8d48988d1c1941735");
+        categoryMap.put("Mellanöstern", "4bf58dd8d48988d115941735");
+        categoryMap.put("Kebab", "5283c7b4e4b094cb91ec88d7");
+        categoryMap.put("Franskt", "4bf58dd8d48988d10c941735");
+        categoryMap.put("Pizza", "4bf58dd8d48988d1ca941735");
+        categoryMap.put("Grekiskt", "4bf58dd8d48988d10e941735");
+        categoryMap.put("Sallad", "4bf58dd8d48988d1bd941735");
+        categoryMap.put("Skandinaviskt", "4bf58dd8d48988d1c6941735");
 
         StringBuilder categoryBuilder = new StringBuilder();
         for(int i = 0; i < selectedCategories.size(); i ++) {
             if(categoryMap.containsKey(selectedCategories.get(i))) {
-                categoryBuilder.append(selectedCategories.get(i) + ",");
+                categoryBuilder.append(categoryMap.get(selectedCategories.get(i)) + ",");
             }
         }
         if(categoryBuilder.length() > 0) {
@@ -93,7 +102,7 @@ public class SearchController extends AsyncTask<String, Void, Void> {
     public void getData() {
 
         if(categories.length() > 0 && categories != null) {
-            execute(API+"55.609069,12.994678&categoryId=4d4b7105d754a06374d81259&limit=50&radius="+distance+"&intent=browse&client_id="+CLIENT_ID+"&client_secret="+CLIENT_SECRET+"&v=20170331");
+            execute(API+"55.609069,12.994678&categoryId="+categories+"&limit=50&radius="+distance+"&intent=browse&client_id="+CLIENT_ID+"&client_secret="+CLIENT_SECRET+"&v=20170331");
         }else {
             execute(API+"55.609069,12.994678&categoryId=4d4b7105d754a06374d81259&limit=50&radius="+distance+"&intent=browse&client_id="+CLIENT_ID+"&client_secret="+CLIENT_SECRET+"&v=20170331");
         }
@@ -104,7 +113,7 @@ public class SearchController extends AsyncTask<String, Void, Void> {
     /**
      * Metoden gör en sträng av en API'ets inputstream för att användas vid hämtning av
      * data från API
-     * @param is
+     * @param is Inputstreamen som ska göras till sträng
      * @return Inputstreamen som sträng
      * @throws IOException Input/Output exception
      */
@@ -172,6 +181,10 @@ public class SearchController extends AsyncTask<String, Void, Void> {
                     restaurant.setLatitude(Double.valueOf(location.getString("lat")));
                     restaurant.setLongitude(Double.valueOf(location.getString("lng")));
 
+                    JSONArray categories = (JSONArray) venue.getJSONArray("categories");
+                    JSONObject category = (JSONObject) categories.get(0);
+                    restaurant.setCategory(category.getString("name"));
+
                     restaurants.add(restaurant);
                 }
             }
@@ -223,6 +236,8 @@ public class SearchController extends AsyncTask<String, Void, Void> {
         switch (error) {
             case 0:
                 if(restaurants.size() > 0) {
+
+                   // new VenueHandlerTest().execute();
                     for(int i = 0; i < restaurants.size(); i++) {
                         new VenueHandler(restaurants.get(i),restaurants.get(i).getId(), i).start();
                         try {
@@ -245,6 +260,98 @@ public class SearchController extends AsyncTask<String, Void, Void> {
                 error = 0;
         }
 
+    }
+
+
+    private class VenueHandlerTest extends AsyncTask<String, Void, Void> {
+
+        @Override
+        protected Void doInBackground(String... params) {
+            Restaurant restaurant;
+
+            for(int i = 0; i < restaurants.size(); i++) {
+                restaurant = restaurants.get(i);
+                try {
+                    String newURL = "https://api.foursquare.com/v2/venues/" + restaurant.getId() + "?client_id=" + CLIENT_ID + "&client_secret=" + CLIENT_SECRET + "&v=20170331";
+
+                    URL url = new URL(newURL);
+                    HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                    urlConnection.setRequestMethod("GET");
+                    urlConnection.setDoInput(true);
+                    urlConnection.connect();
+
+                    String response = streamToString(urlConnection.getInputStream());
+                    JSONObject jsonObj = (JSONObject) new JSONTokener(response).nextValue();
+
+                    JSONObject venue = (JSONObject) jsonObj.getJSONObject("response").getJSONObject("venue");
+
+                    JSONObject contact = (JSONObject) venue.getJSONObject("contact");
+
+                    if (contact.has("phone")) {
+                        restaurant.setPhone(contact.getString("phone"));
+                        System.out.println("TELEFONNUMMER: " + restaurant.getPhone());
+                    }
+
+                    if (venue.has("url")) {
+                        restaurant.setWebsite(venue.getString("url"));
+                        System.out.println("HEMSIDA:::::::::::" + restaurant.getWebsite());
+                    }
+
+                    if (venue.has("rating")) {
+                        restaurant.setRating(venue.getDouble("rating"));
+                        System.out.println("BETYG:::::::::::" + restaurant.getRating());
+                    }
+
+                    if (venue.has("hours")) {
+                        JSONObject hours = venue.getJSONObject("hours");
+                        boolean open = hours.getBoolean("isOpen");
+                        System.out.println("ÖPPET OR NAH???? :::::::::" + open);
+                        if (open) {
+                            restaurant.setOpen("Öppet");
+                        } else {
+                            restaurant.setOpen("Stängt");
+                        }
+
+                    } else {
+                        restaurant.setOpen("");
+                    }
+
+                    if (venue.has("price")) {
+                        JSONObject price = (JSONObject) venue.getJSONObject("price");
+                        restaurant.setPrice(price.getInt("tier"));
+                    } else {
+                        restaurant.setPrice(0);
+                    }
+                } catch (IOException e) {
+                    System.out.println("HeJ, Funkar ej");
+                    //getMainActivity().getSearchButton().setEnabled(true);
+                    progressDialog.dismiss();
+                    getMainActivity().errorAlert("Något gick fel");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    System.out.println("HeJ, Funkar ej JSON");
+                    //getMainActivity().getSearchButton().setEnabled(true);
+                    progressDialog.dismiss();
+                    getMainActivity().errorAlert("Något gick fel");
+                } catch (Exception e) {
+                    getMainActivity().errorAlert("Något gick fel");
+                    //getMainActivity().getSearchButton().setEnabled(true);
+                    progressDialog.dismiss();
+                }
+
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            System.out.println("RESTAURANGER INNAN FILTRERING::::::" + restaurants.size());
+            mainActivity.openActivity(filterRestaurants(restaurants));
+            mainActivity.getSearchButton().setEnabled(true);
+            progressDialog.dismiss();
+        }
     }
 
     /**
@@ -325,6 +432,7 @@ public class SearchController extends AsyncTask<String, Void, Void> {
                 }
 
                 if(index == restaurants.size()-1) {
+                    Thread.sleep(500);
                     System.out.println("RESTAURANGER INNAN FILTRERING::::::" + restaurants.size());
                     mainActivity.openActivity(filterRestaurants(restaurants));
                     mainActivity.getSearchButton().setEnabled(true);
