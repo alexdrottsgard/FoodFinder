@@ -16,36 +16,29 @@ import android.support.v4.app.ActivityCompat;
 import android.view.View;
 import android.widget.*;
 
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Random;
 
 /**
- * @author Filip Heidfors, Alexander J. Drottsgård, John Eklöf, Elias Moltedo
  * Applikationen startar i den här klassen. GUI för startsida där användare kan göra en sökning filtrerat
  * på prisklass och avstånd. (Prisklass ej implementerat ännu)
+ * @author Filip Heidfors, Alexander J. Drottsgård, John Eklöf, Elias Moltedo
  */
 public class MainActivity extends Activity {
     private int chosenPrice = 4, chosenDistance = 1000;
     private double longitude, latitude;
     private Button searchButton, randomButton,categoryButton, priceButton;
-    private ImageView logo;
     private EditText distanceField;
     private static final String[] priceClass = {"$  (~0-100 kr)", "$$ (~100-200 kr)", "$$$ (~200-350 kr)", "$$$$ (~350+ kr)"};
-    private String[] categories = {"Asiatiskt", "Grekiskt", "Franskt", "Hamburgare", "Indiskt", "Italienskt", "Kebab", "Mellanöstern", "Mexikanskt", "Pizza", "Sallad", "Skandinaviskt", "Vegetariskt/Veganskt"};
-    private ArrayList<String> seletedCategories = new ArrayList<String>();
-    private HashMap<String,String> categoryMap = new HashMap<String, String>();
+    private String[] categoryArray = {"Asiatiskt", "Grekiskt", "Franskt", "Hamburgare", "Indiskt", "Italienskt", "Kebab", "Mellanöstern", "Mexikanskt", "Pizza", "Sallad", "Skandinaviskt", "Vegetariskt/Veganskt"};
+    private ArrayList<String> selectedCategories = new ArrayList<String>();
     private LocationManager locationManager;
     private LocationListener locationListener;
     private boolean random = false;
-    //private String selectedCategories;
     private AlertDialog priceAlert;
-    private StringBuilder categoryBuilder = new StringBuilder();
 
     /**
      * Metoden startar klassen
-     *
      * @param savedInstanceState
      */
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +48,7 @@ public class MainActivity extends Activity {
         setUpPriceAlert();
 
         categoryButton = (Button) findViewById(R.id.categoryButton);
-        categoryButton.setOnClickListener(new CategoryBtnListener());
+        categoryButton.setOnClickListener(new CategoryButtonListener());
         priceButton = (Button) findViewById(R.id.priceBtn);
         priceButton.setOnClickListener(new PriceButtonListener());
         searchButton = (Button) findViewById(R.id.searchButton);
@@ -63,9 +56,6 @@ public class MainActivity extends Activity {
         randomButton = (Button) findViewById(R.id.randomButton);
         randomButton.setOnClickListener(new RandomButtonListener());
         distanceField = (EditText) findViewById(R.id.distance);
-
-
-
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
@@ -134,69 +124,26 @@ public class MainActivity extends Activity {
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 0, locationListener);
     }
 
-    private class CategoryBtnListener implements View.OnClickListener {
-
+    private class CategoryButtonListener implements View.OnClickListener {
         AlertDialog.Builder ab = new AlertDialog.Builder(MainActivity.this)
                 .setTitle("Välj kategori/er för att specificera din sökning")
-                .setMultiChoiceItems(categories, null, new DialogInterface.OnMultiChoiceClickListener() {
+                .setMultiChoiceItems(categoryArray, null, new DialogInterface.OnMultiChoiceClickListener() {
 
                     public void onClick(DialogInterface dialog, int indexSelected, boolean isChecked) {
 
                         if (isChecked) {
-                            seletedCategories.add(categories[indexSelected]);
-                            // If the user checked the item, add it to the selected items
-//                            if (indexSelected == 0) {
-//                                ListView listView = ((AlertDialog) dialog).getListView();
-//                                for (int i = 1; i < categories.length; i++) {
-//                                    listView.setItemChecked(i, true);
-//                                    listView.setItemChecked(0, true);
-//                                    seletedCategories.add(categories[i]);
-//                                }
-//                            } else {
-//                                seletedCategories.add(categories[indexSelected]);
-//                            }
-
-                            System.out.println(seletedCategories.toString());
+                            selectedCategories.add(categoryArray[indexSelected]);
+                            System.out.println(selectedCategories.toString());
                         }else {
-
-                            seletedCategories.remove(categories[indexSelected]);
-//                            if(indexSelected == 0) {
-//                                ListView listView = ((AlertDialog) dialog).getListView();
-//                                for (int i = 1; i < categories.length; i++) {
-//                                    listView.setItemChecked(i, false);
-//                                    listView.setItemChecked(0, false);
-//                                }
-//                                seletedCategories.clear();
-//                            }else {
-//                                seletedCategories.remove(categories[indexSelected]);
-//                            }
-                            System.out.println(seletedCategories.toString());
+                            selectedCategories.remove(categoryArray[indexSelected]);
+                            System.out.println(selectedCategories.toString());
                         }
-
-
-
-//                        } else if (seletedCategories.contains(categories[indexSelected])) {
-//                            // Else, if the item is already in the array, remove it
-//                            if(indexSelected == 0) {
-//                                ListView listView = ((AlertDialog) dialog).getListView();
-//                                for (int i = 1; i < categories.length; i++) {
-//                                    listView.setItemChecked(i, false);
-//                                    listView.setItemChecked(0, false);
-//                                }
-//                                seletedCategories.clear();
-//                            }
-//                        }
                     }
                 }).setPositiveButton("Klar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        //  Your code when user clicked on OK
-                        //  You can write the code  to save the selected item here
-                        //System.out.println(seletedCategories.toString());
                     }
                 });
-
-
 
         AlertDialog categoryAlert = ab.create();
 
@@ -242,7 +189,6 @@ public class MainActivity extends Activity {
      * Lyssnare för prisklass knappen
      */
     private class PriceButtonListener implements View.OnClickListener {
-
         public void onClick(View v) {
             priceAlert.show();
             priceAlert.getListView().setItemChecked(chosenPrice-1,true);
@@ -265,7 +211,7 @@ public class MainActivity extends Activity {
             } catch (Exception e) {
             }
             random = false;
-            new SearchController(chosenDistance, chosenPrice, MainActivity.this, getLatitude(), getLongitude(), seletedCategories);
+            new SearchController(chosenDistance, chosenPrice, MainActivity.this, getLatitude(), getLongitude(), selectedCategories);
         }
     }
 
@@ -285,7 +231,7 @@ public class MainActivity extends Activity {
             } catch (Exception e) {
             }
             random = true;
-            new SearchController(chosenDistance, chosenPrice, MainActivity.this, getLatitude(), getLongitude(), seletedCategories);
+            new SearchController(chosenDistance, chosenPrice, MainActivity.this, getLatitude(), getLongitude(), selectedCategories);
         }
     }
 
@@ -294,7 +240,6 @@ public class MainActivity extends Activity {
      * @param str Meddelandet som ska visas
      */
     public void errorAlert(String str) {
-
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setMessage(str)
                 .setCancelable(true)

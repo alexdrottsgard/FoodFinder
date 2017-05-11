@@ -4,15 +4,11 @@ package se.group14.foodfinder;
  * @author Filip Heidfors, John Eklöf,
  */
 
-import android.Manifest;
 import android.app.*;
 import android.content.*;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.*;
-import android.support.v4.app.Fragment;
 import android.view.*;
 import android.widget.*;
 
@@ -26,7 +22,7 @@ import com.google.android.gms.maps.model.*;
 public class InformationActivity extends Activity implements OnMapReadyCallback{
     private Restaurant restaurant;
     private TextView txtName, txtAddress, txtRating, txtOpen;
-    private Button btnCall, btnWeb, btnGetHere;
+    private Button buttonCall, buttonWeb, buttonGetHere;
     private GoogleMap mGoogleMap;
     private MapView mapView;
 
@@ -38,8 +34,6 @@ public class InformationActivity extends Activity implements OnMapReadyCallback{
 
         Intent intent = getIntent();
         restaurant = (Restaurant) intent.getSerializableExtra("restaurant");
-
-        //Toast.makeText(getApplicationContext(),"Prisklass: " + restaurant.getPrice() + "Avstånd: " + restaurant.getDistance(),Toast.LENGTH_LONG).show();
 
         txtName = (TextView) findViewById(R.id.restaurantName);
         txtName.setText(restaurant.getName());
@@ -63,12 +57,12 @@ public class InformationActivity extends Activity implements OnMapReadyCallback{
         txtRating = (TextView) findViewById(R.id.rating);
         txtRating.setText("" + restaurant.getRating());
 
-        btnCall = (Button) findViewById(R.id.btn_call);
-        btnCall.setOnClickListener(new ButtonCallListener());
-        btnGetHere = (Button) findViewById(R.id.btn_get_here);
-        btnGetHere.setOnClickListener(new ButtonGetHereListener());
-        btnWeb = (Button) findViewById(R.id.btn_website);
-        btnWeb.setOnClickListener(new ButtonWebsiteListener());
+        buttonCall = (Button) findViewById(R.id.btn_call);
+        buttonCall.setOnClickListener(new ButtonCallListener());
+        buttonGetHere = (Button) findViewById(R.id.btn_get_here);
+        buttonGetHere.setOnClickListener(new ButtonGetHereListener());
+        buttonWeb = (Button) findViewById(R.id.btn_website);
+        buttonWeb.setOnClickListener(new ButtonWebsiteListener());
 
         mapView = (MapView) findViewById(R.id.mapView);
 
@@ -102,7 +96,6 @@ public class InformationActivity extends Activity implements OnMapReadyCallback{
      * telefonnummer inmatat
      */
     private class ButtonCallListener implements View.OnClickListener {
-
         @Override
         public void onClick(View v) {
             try {
@@ -135,7 +128,6 @@ public class InformationActivity extends Activity implements OnMapReadyCallback{
      * i extern webbläsare
      */
     private class ButtonWebsiteListener implements View.OnClickListener {
-
         @Override
         public void onClick(View v) {
             if(restaurant.getWebsite() != null) {
@@ -163,7 +155,6 @@ public class InformationActivity extends Activity implements OnMapReadyCallback{
      * Lyssnare för vägbeskrivningsknapp. Ska öppna vägbeskrivning i extern kartapp
      */
     private class ButtonGetHereListener implements View.OnClickListener {
-
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(android.content.Intent.ACTION_VIEW,

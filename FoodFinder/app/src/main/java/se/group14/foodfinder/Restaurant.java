@@ -1,8 +1,5 @@
 package se.group14.foodfinder;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import java.io.Serializable;
 
 /**
@@ -16,16 +13,14 @@ public class Restaurant implements Serializable {
     private String name;
     private String address;
     private String phone;
+    private String category;
+    private String website;
+    private String open;
     private double rating;
     private double latitude;
     private double longitude;
-    private String website;
     private int price;
-    private String category;
-    private String hours;
     private int distance;
-    private String open;
-
 
     public String getId() {
         return id;

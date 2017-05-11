@@ -70,7 +70,6 @@ public class ResultListView extends Fragment implements Comparator<Restaurant> {
      * Inre klass som extendar BaseAdapter. Hanterar resultView så den kan visa mer information.
      */
     private class RestaurantListAdapter extends BaseAdapter {
-
         private Context mContext;
 
         public RestaurantListAdapter(Context mContext) {
@@ -105,7 +104,6 @@ public class ResultListView extends Fragment implements Comparator<Restaurant> {
             category.setText(restaurants.get(position).getCategory());
             distance.setText(restaurants.get(position).getDistance() + " meter");
             priceClass.setText("Prisklass " + restaurants.get(position).getPrice());
-            //distance.setText(restaurants.get(position).getDistance() + "");
             String ratingString = (restaurants.get(position).getRating() == 0.0) ? "?" : ""+restaurants.get(position).getRating();
             rating.setText(String.valueOf(ratingString + "/10"));
 
@@ -119,7 +117,6 @@ public class ResultListView extends Fragment implements Comparator<Restaurant> {
      * Inre klass som implementerar Adapterview. Hanterar klick på ListViewn.
      */
     private class ListListener implements AdapterView.OnItemClickListener {
-
         /**
          * Metod som hanterar klick på en rad i ListViewn
          * @param parent
@@ -133,5 +130,4 @@ public class ResultListView extends Fragment implements Comparator<Restaurant> {
             startActivity(intent);
         }
     }
-
 }

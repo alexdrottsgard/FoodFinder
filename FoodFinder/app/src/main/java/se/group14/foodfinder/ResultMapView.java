@@ -1,6 +1,5 @@
 package se.group14.foodfinder;
 
-//import android.app.Fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.Nullable;
@@ -34,7 +33,7 @@ public class ResultMapView extends Fragment implements OnMapReadyCallback, Googl
     private MapView mapView;
     private GoogleMap mGoogleMap;
     private View view;
-    private HashMap<Marker, Restaurant> hashMap = new HashMap<Marker, Restaurant>();
+    private HashMap<Marker, Restaurant> restaurantMap = new HashMap<Marker, Restaurant>();
     private LatLng userPosition;
 
     /**
@@ -115,7 +114,7 @@ public class ResultMapView extends Fragment implements OnMapReadyCallback, Googl
             markerOptions.title(restaurants.get(i).getName());
             markerOptions.snippet("Avstånd: " +restaurants.get(i).getDistance() + " meter Betyg: " + restaurants.get(i).getRating() + "/10");
             marker = mGoogleMap.addMarker(markerOptions);
-            hashMap.put(marker,restaurants.get(i));
+            restaurantMap.put(marker,restaurants.get(i));
         }
     }
 
@@ -125,9 +124,9 @@ public class ResultMapView extends Fragment implements OnMapReadyCallback, Googl
      * @param marker Markern användaren klickade på
      */
     public void onInfoWindowClick(Marker marker) {
-        System.out.println("RESTAURANG MAN KLICKADE PÅ " + hashMap.get(marker).getName());
+        System.out.println("RESTAURANG MAN KLICKADE PÅ " + restaurantMap.get(marker).getName());
         Intent intent = new Intent(activity, InformationActivity.class);
-        intent.putExtra("restaurant", hashMap.get(marker));
+        intent.putExtra("restaurant", restaurantMap.get(marker));
         startActivity(intent);
     }
 }
